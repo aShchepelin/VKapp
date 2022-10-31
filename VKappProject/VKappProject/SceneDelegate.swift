@@ -1,7 +1,5 @@
-//
-//  SceneDelegate.swift
-//  VKappProject
-//
+// SceneDelegate.swift
+// Copyright © RoadMap. All rights reserved.
 
 import UIKit
 

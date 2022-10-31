@@ -74,11 +74,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6FFC08F0291034F900AE87B1 /* Build configuration list for PBXNativeTarget "VKappProject" */;
 			buildPhases = (
+				6FFC08F4291039A300AE87B1 /* SwiftFormat */,
+				6FFC08F32910353700AE87B1 /* SwiftLint */,
 				6FFC08D8291034F700AE87B1 /* Sources */,
 				6FFC08D9291034F700AE87B1 /* Frameworks */,
 				6FFC08DA291034F700AE87B1 /* Resources */,
-				6FFC08F4291039A300AE87B1 /* SwiftFormat */,
-				6FFC08F32910353700AE87B1 /* SwiftLint */,
 			);
 			buildRules = (
 			);

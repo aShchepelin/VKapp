@@ -1,7 +1,5 @@
-//
-//  AppDelegate.swift
-//  VKappProject
-//
+// AppDelegate.swift
+// Copyright © RoadMap. All rights reserved.
 
 import UIKit
 
@@ -12,6 +10,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         // Override point for customization after application launch.
-        return true
+        true
     }
 }

@@ -1,7 +1,5 @@
-//
-//  ViewController.swift
-//  VKappProject
-//
+// ViewController.swift
+// Copyright © RoadMap. All rights reserved.
 
 import UIKit
 
