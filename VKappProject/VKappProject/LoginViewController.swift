@@ -19,8 +19,8 @@ final class LoginViewController: UIViewController {
     // MARK: - Private IBOutlets
 
     @IBOutlet private var scrollView: UIScrollView!
-    @IBOutlet var loginTextField: UITextField!
-    @IBOutlet var passwordTextField: UITextField!
+    @IBOutlet private var loginTextField: UITextField!
+    @IBOutlet private var passwordTextField: UITextField!
 
     // MARK: - Lifeсycle
 
@@ -31,25 +31,12 @@ final class LoginViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardWillShownAction(notification:)),
-            name: UIResponder.keyboardWillShowNotification,
-            object: nil
-        )
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardWillHideAction(notification:)),
-            name: UIResponder.keyboardWillHideNotification,
-            object: nil
-        )
+        notificationObserverForKeyboard()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        removeNotificationObserverForKeyboard()
     }
 
     // MARK: - Public Method
@@ -68,11 +55,33 @@ final class LoginViewController: UIViewController {
 
     // MARK: - Private Methods
 
+    private func removeNotificationObserverForKeyboard() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+    }
+
+    private func notificationObserverForKeyboard() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShownAction(notification:)),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHideAction(notification:)),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
+    }
+
     @objc private func keyboardWillShownAction(notification: Notification) {
         guard let info = notification.userInfo as? NSDictionary else { return }
-        guard let kbSize = (info.value(forKey: UIResponder.keyboardFrameEndUserInfoKey) as? NSValue)?.cgRectValue.size
+        guard let keyboardSize = (info.value(forKey: UIResponder.keyboardFrameEndUserInfoKey) as? NSValue)?.cgRectValue
+            .size
         else { return }
-        let contectInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: kbSize.height, right: 0)
+        let contectInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardSize.height, right: 0)
         scrollView.contentInset = contectInset
         scrollView.scrollIndicatorInsets = contectInset
     }
@@ -87,22 +96,22 @@ final class LoginViewController: UIViewController {
     }
 
     private func showLoginError() {
-        let alert = UIAlertController(
+        let loginAlertController = UIAlertController(
             title: Constants.alertTitleText,
             message: Constants.alertMessageText,
             preferredStyle: .alert
         )
 
-        let action = UIAlertAction(title: Constants.alertActionText, style: .cancel)
+        let loginAlertAction = UIAlertAction(title: Constants.alertActionText, style: .cancel)
 
-        alert.addAction(action)
+        loginAlertController.addAction(loginAlertAction)
 
-        present(alert, animated: true)
+        present(loginAlertController, animated: true)
     }
 
     private func checkLogin() -> Bool {
-        guard let login = loginTextField.text else { return false }
-        guard let password = passwordTextField.text else { return false }
+        guard let login = loginTextField.text,
+              let password = passwordTextField.text else { return false }
 
         if login == Constants.loginText, password == Constants.passwordText {
             return true
