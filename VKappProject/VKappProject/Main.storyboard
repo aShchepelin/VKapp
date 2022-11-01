@@ -208,9 +208,6 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="a2z-cO-85k" kind="show" id="75H-t5-o4S"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -218,7 +215,13 @@
                             <outlet property="delegate" destination="m9n-bN-6QC" id="lom-OW-Crk"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Groups" id="Ffc-gs-bfA"/>
+                    <navigationItem key="navigationItem" title="Groups" id="Ffc-gs-bfA">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="SMO-lQ-RhH">
+                            <connections>
+                                <segue destination="a2z-cO-85k" kind="show" id="Jji-P4-tY0"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x8v-Tn-0dk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
