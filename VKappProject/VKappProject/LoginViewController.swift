@@ -36,7 +36,7 @@ final class LoginViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        removeNotificationObserverForKeyboard()
+      removeNotificationObserverForKeyboard()
     }
 
     // MARK: - Public Method
@@ -54,7 +54,25 @@ final class LoginViewController: UIViewController {
     }
 
     // MARK: - Private Methods
+    
+    @objc private func keyboardWillShownAction(notification: Notification) {
+        guard let info = notification.userInfo as? NSDictionary else { return }
+        guard let keyboardSize = (info.value(forKey: UIResponder.keyboardFrameEndUserInfoKey) as? NSValue)?.cgRectValue.size
+        else { return }
+        let contectInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardSize.height, right: 0)
+        scrollView.contentInset = contectInset
+        scrollView.scrollIndicatorInsets = contectInset
+    }
 
+    @objc private func keyboardWillHideAction(notification: Notification) {
+        scrollView.contentInset = UIEdgeInsets.zero
+        scrollView.scrollIndicatorInsets = UIEdgeInsets.zero
+    }
+
+    @objc private func hideKeyboardAction() {
+        scrollView.endEditing(true)
+    }
+    
     private func removeNotificationObserverForKeyboard() {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -76,24 +94,6 @@ final class LoginViewController: UIViewController {
         )
     }
 
-    @objc private func keyboardWillShownAction(notification: Notification) {
-        guard let info = notification.userInfo as? NSDictionary else { return }
-        guard let keyboardSize = (info.value(forKey: UIResponder.keyboardFrameEndUserInfoKey) as? NSValue)?.cgRectValue
-            .size
-        else { return }
-        let contectInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardSize.height, right: 0)
-        scrollView.contentInset = contectInset
-        scrollView.scrollIndicatorInsets = contectInset
-    }
-
-    @objc private func keyboardWillHideAction(notification: Notification) {
-        scrollView.contentInset = UIEdgeInsets.zero
-        scrollView.scrollIndicatorInsets = UIEdgeInsets.zero
-    }
-
-    @objc private func hideKeyboardAction() {
-        scrollView.endEditing(true)
-    }
 
     private func showLoginError() {
         let loginAlertController = UIAlertController(
@@ -111,7 +111,7 @@ final class LoginViewController: UIViewController {
 
     private func checkLogin() -> Bool {
         guard let login = loginTextField.text,
-              let password = passwordTextField.text else { return false }
+        let password = passwordTextField.text else { return false }
 
         if login == Constants.loginText, password == Constants.passwordText {
             return true
