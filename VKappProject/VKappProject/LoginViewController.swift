@@ -86,14 +86,18 @@ final class LoginViewController: UIViewController {
         scrollView.endEditing(true)
     }
 
-    private func hideKeyboardGestureRecognizer() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboardAction))
-        scrollView.addGestureRecognizer(tapGesture)
-    }
+    private func showLoginError() {
+        let alert = UIAlertController(
+            title: Constants.alertTitleText,
+            message: Constants.alertMessageText,
+            preferredStyle: .alert
+        )
 
-    private func setupUI() {
-        loginTextField.setLeftPaddingPoints(10)
-        passwordTextField.setLeftPaddingPoints(10)
+        let action = UIAlertAction(title: Constants.alertActionText, style: .cancel)
+
+        alert.addAction(action)
+
+        present(alert, animated: true)
     }
 
     private func checkLogin() -> Bool {
@@ -107,17 +111,13 @@ final class LoginViewController: UIViewController {
         }
     }
 
-    private func showLoginError() {
-        let alert = UIAlertController(
-            title: Constants.alertTitleText,
-            message: Constants.alertMessageText,
-            preferredStyle: .alert
-        )
+    private func hideKeyboardGestureRecognizer() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboardAction))
+        scrollView.addGestureRecognizer(tapGesture)
+    }
 
-        let action = UIAlertAction(title: Constants.alertActionText, style: .cancel)
-
-        alert.addAction(action)
-
-        present(alert, animated: true)
+    private func setupUI() {
+        loginTextField.setLeftPaddingPoints(10)
+        passwordTextField.setLeftPaddingPoints(10)
     }
 }
