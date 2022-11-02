@@ -3,7 +3,7 @@
 
 import UIKit
 
-/// Стартовый экран приложения
+/// Экран авторизации
 final class LoginViewController: UIViewController {
     // MARK: - Private Enum
 
@@ -36,28 +36,27 @@ final class LoginViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-      removeNotificationObserverForKeyboard()
+        removeNotificationObserverForKeyboard()
     }
 
     // MARK: - Public Method
 
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
-        if identifier == Constants.identifier {
-            if checkLogin() {
-                return true
-            } else {
-                showLoginError()
-                return false
-            }
+        guard identifier == Constants.identifier,
+              checkLogin()
+        else {
+            showLoginError(title: Constants.alertTitleText, message: Constants.alertMessageText)
+            return false
         }
         return true
     }
 
     // MARK: - Private Methods
-    
+
     @objc private func keyboardWillShownAction(notification: Notification) {
         guard let info = notification.userInfo as? NSDictionary else { return }
-        guard let keyboardSize = (info.value(forKey: UIResponder.keyboardFrameEndUserInfoKey) as? NSValue)?.cgRectValue.size
+        guard let keyboardSize = (info.value(forKey: UIResponder.keyboardFrameEndUserInfoKey) as? NSValue)?.cgRectValue
+            .size
         else { return }
         let contectInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardSize.height, right: 0)
         scrollView.contentInset = contectInset
@@ -72,7 +71,7 @@ final class LoginViewController: UIViewController {
     @objc private func hideKeyboardAction() {
         scrollView.endEditing(true)
     }
-    
+
     private func removeNotificationObserverForKeyboard() {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -94,30 +93,15 @@ final class LoginViewController: UIViewController {
         )
     }
 
-
-    private func showLoginError() {
-        let loginAlertController = UIAlertController(
-            title: Constants.alertTitleText,
-            message: Constants.alertMessageText,
-            preferredStyle: .alert
-        )
-
-        let loginAlertAction = UIAlertAction(title: Constants.alertActionText, style: .cancel)
-
-        loginAlertController.addAction(loginAlertAction)
-
-        present(loginAlertController, animated: true)
-    }
-
     private func checkLogin() -> Bool {
         guard let login = loginTextField.text,
-        let password = passwordTextField.text else { return false }
-
-        if login == Constants.loginText, password == Constants.passwordText {
-            return true
-        } else {
+              let password = passwordTextField.text,
+              login == Constants.loginText,
+              password == Constants.passwordText
+        else {
             return false
         }
+        return true
     }
 
     private func hideKeyboardGestureRecognizer() {
