@@ -5,6 +5,10 @@ import UIKit
 
 /// Экран доступных групп
 final class AvailableTableViewController: UITableViewController {
+    // MARK: - Public Properties
+
+    var closureForGroup: ((Group) -> Void)?
+
     // MARK: - Private Properties
 
     private var availableGroup = groups {
@@ -12,8 +16,6 @@ final class AvailableTableViewController: UITableViewController {
             tableView.reloadData()
         }
     }
-
-    var closureForGroup: ((Group) -> Void)?
 
     // MARK: - LifeCycle
 

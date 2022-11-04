@@ -11,10 +11,6 @@ final class FriendCollectionViewController: UICollectionViewController {
 
     // MARK: UICollectionViewDataSource, UICollectionViewDelegate
 
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        1
-    }
-
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         1
     }

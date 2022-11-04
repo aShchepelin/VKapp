@@ -2,6 +2,7 @@
 // Copyright © RoadMap. All rights reserved.
 
 import Foundation
+
 /// Константы
 enum Constants {
     enum UserImageNames {
