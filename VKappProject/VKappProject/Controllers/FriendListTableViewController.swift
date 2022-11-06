@@ -1,10 +1,10 @@
-// FriendsTableViewController.swift
+// FriendListTableViewController.swift
 // Copyright © RoadMap. All rights reserved.
 
 import UIKit
 
 /// Экран списка друзей
-final class FriendsTableViewController: UITableViewController {
+final class FriendListTableViewController: UITableViewController {
     // MARK: - Private Enum
 
     private enum ConstantsForSegue {
@@ -34,6 +34,15 @@ final class FriendsTableViewController: UITableViewController {
         User(avatarImageName: Constants.UserImageNames.martinSteinImageName, name: Constants.UserNames.martinSteinName)
     ]
 
+    // MARK: - Public Method
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard segue.identifier == Constants.Identifiers.friendCollectionViewController,
+              let friendCollectionViewController = segue.destination as? FriendCollectionViewController else { return }
+        guard let indexPath = tableView.indexPathForSelectedRow else { return }
+        friendCollectionViewController.friendAvatarName = users[indexPath.row].avatarImageName
+    }
+
     // MARK: - UITableViewDelegate, UITableViewDataSource
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -46,18 +55,7 @@ final class FriendsTableViewController: UITableViewController {
                 withIdentifier: Constants.Identifiers
                     .friendListCellIdentifier
             ) as? FriendListTableViewCell else { return UITableViewCell() }
-        cell.userAvatarImageView.image = UIImage(named: users[indexPath.row].avatarImageName)
-        cell.userNameLabel.text = users[indexPath.row].name
+        cell.configureCell(users[indexPath.row])
         return cell
-    }
-
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let storyboardVC = UIStoryboard(name: ConstantsForSegue.storyboardName, bundle: nil)
-        guard let nextScreen = storyboardVC
-            .instantiateViewController(withIdentifier: ConstantsForSegue.friendCollectionViewControllerIdentifier)
-            as? FriendCollectionViewController else { return }
-        nextScreen.modalPresentationStyle = .fullScreen
-        show(nextScreen, sender: nil)
-        nextScreen.friendAvatarName = users[indexPath.row].avatarImageName
     }
 }

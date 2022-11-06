@@ -5,8 +5,15 @@ import UIKit
 
 /// Ячейка с моими группами
 final class MyGroupsTableViewCell: UITableViewCell {
-    // MARK: - IBOutlets
+    // MARK: - Private IBOutlets
 
-    @IBOutlet var groupNameLabel: UILabel!
-    @IBOutlet var groupAvatarImageView: UIImageView!
+    @IBOutlet private var groupNameLabel: UILabel!
+    @IBOutlet private var groupAvatarImageView: UIImageView!
+
+    // MARK: - Public Method
+
+    func configureCell(_ model: Group) {
+        groupNameLabel.text = model.groupName
+        groupAvatarImageView.image = UIImage(named: model.groupAvatarImageName)
+    }
 }

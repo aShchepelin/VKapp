@@ -3,7 +3,7 @@
 
 import UIKit
 
-/// Ячейка с фотографией друга
+/// Контроллер с фотографией друга
 final class FriendCollectionViewController: UICollectionViewController {
     // MARK: - Public Property
 
@@ -23,7 +23,7 @@ final class FriendCollectionViewController: UICollectionViewController {
             withReuseIdentifier: Constants.Identifiers.friendCellIdentifier,
             for: indexPath
         ) as? FriendCollectionViewCell else { return UICollectionViewCell() }
-        cell.friendImageView.image = UIImage(named: friendAvatarName)
+        cell.configureCell(friendAvatarName)
         return cell
     }
 }

@@ -51,5 +51,6 @@ enum Constants {
         static let friendCellIdentifier = "friendCell"
         static let addGroupIdentifier = "addGroup"
         static let availableGroupsCellIdentifier = "availableGroupsCell"
+        static let friendCollectionViewController = "friendCollectionVC"
     }
 }

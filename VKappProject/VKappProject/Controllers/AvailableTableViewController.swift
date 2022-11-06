@@ -5,28 +5,22 @@ import UIKit
 
 /// Экран доступных групп
 final class AvailableTableViewController: UITableViewController {
-    // MARK: - Public Properties
-
-    var closureForGroup: ((Group) -> Void)?
-
     // MARK: - Private Properties
 
-    private var availableGroup = groups {
+    private var availableGroups = groups {
         didSet {
             tableView.reloadData()
         }
     }
 
-    // MARK: - LifeCycle
+    // MARK: - Public Properties
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
+    var closureForGroup: ((Group) -> Void)?
 
     // MARK: - Public Methods
 
     func addGroup(_ group: [Group], complition: @escaping ((Group) -> Void)) {
-        availableGroup = availableGroup.filter { groups in
+        availableGroups = availableGroups.filter { groups in
             !group.contains { myGroup in
                 myGroup == groups
             }
@@ -34,10 +28,17 @@ final class AvailableTableViewController: UITableViewController {
         closureForGroup = complition
     }
 
+    private func chooseGroup() {
+        guard let indexPath = tableView.indexPathForSelectedRow else { return }
+        let group = availableGroups[indexPath.row]
+        closureForGroup?(group)
+        navigationController?.popViewController(animated: true)
+    }
+
     // MARK: - UITableViewDelegate, UITableViewDataSource
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        availableGroup.count
+        availableGroups.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -47,14 +48,11 @@ final class AvailableTableViewController: UITableViewController {
                     .availableGroupsCellIdentifier
             ) as? AvailableGroupTableViewCell
         else { return UITableViewCell() }
-        cell.groupImageView.image = UIImage(named: availableGroup[indexPath.row].groupAvatarImageName)
-        cell.groupNameLabel.text = availableGroup[indexPath.row].groupName
+        cell.configureCell(availableGroups[indexPath.row])
         return cell
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let group = availableGroup[indexPath.row]
-        closureForGroup?(group)
-        navigationController?.popViewController(animated: true)
+        chooseGroup()
     }
 }

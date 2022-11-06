@@ -1,4 +1,4 @@
-// LikePhotoControlView.swift
+// LikePhotoControl.swift
 // Copyright © RoadMap. All rights reserved.
 
 import UIKit
@@ -37,15 +37,15 @@ final class LikePhotoControl: UIControl {
     // MARK: - Private IBAction
 
     @IBAction private func likeButtonAction(_ sender: Any) {
-        if likeButton.tag == 0 {
+        guard likeButton.tag == 1 else {
             likeButton.setImage(UIImage(systemName: Constants.heartFillImageName), for: .normal)
             likeButton.tintColor = .systemRed
             likeButton.tag = 1
             likeCountLabel.text = Constants.buttonSelectedTag
-        } else {
-            likeButton.setImage(UIImage(systemName: Constants.heartImageName), for: .normal)
-            likeCountLabel.text = Constants.buttonNormalTag
-            likeButton.tag = 0
+            return
         }
+        likeButton.setImage(UIImage(systemName: Constants.heartImageName), for: .normal)
+        likeCountLabel.text = Constants.buttonNormalTag
+        likeButton.tag = 0
     }
 }

@@ -5,6 +5,12 @@ import UIKit
 
 /// Вью с тенью
 final class ShadowView: UIView {
+    // MARK: - Public Properties
+
+    override class var layerClass: AnyClass {
+        CAShapeLayer.self
+    }
+
     // MARK: - Private Properties
 
     @IBInspectable private var shadowRadius: CGFloat = 8 {
@@ -23,12 +29,6 @@ final class ShadowView: UIView {
         didSet {
             setNeedsDisplay()
         }
-    }
-
-    // MARK: - Public Properties
-
-    override class var layerClass: AnyClass {
-        CAShapeLayer.self
     }
 
     // MARK: - Public Methods

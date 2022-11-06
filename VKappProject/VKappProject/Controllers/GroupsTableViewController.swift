@@ -45,8 +45,7 @@ final class GroupsTableViewController: UITableViewController {
                 withIdentifier: Constants.Identifiers
                     .groupsCellIdentifier
             ) as? MyGroupsTableViewCell else { return UITableViewCell() }
-        cell.groupAvatarImageView.image = UIImage(named: groups[indexPath.row].groupAvatarImageName)
-        cell.groupNameLabel.text = groups[indexPath.row].groupName
+        cell.configureCell(groups[indexPath.row])
         return cell
     }
 }
