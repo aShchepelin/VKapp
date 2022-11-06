@@ -9,6 +9,7 @@ extension UIViewController {
 
     private enum Constants {
         static let alertActionTitleText = "OK"
+        static let alertTitleText = "Добавить группу"
     }
 
     // MARK: - Public Method
