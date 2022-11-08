@@ -5,15 +5,6 @@ import UIKit
 
 /// Контрол для лайка
 final class LikePhotoControl: UIControl {
-    // MARK: - Private Enum
-
-    private enum Constants {
-        static let heartImageName = "heart"
-        static let heartFillImageName = "heart.fill"
-        static let buttonSelectedTag = "1"
-        static let buttonNormalTag = "0"
-    }
-
     // MARK: - Private IBOutlet
 
     @IBOutlet private var likeButton: UIButton!
@@ -26,26 +17,26 @@ final class LikePhotoControl: UIControl {
         setupUI()
     }
 
-    // MARK: - Private Method
-
-    private func setupUI() {
-        likeButton.setImage(UIImage(systemName: Constants.heartImageName), for: .normal)
-        likeCountLabel.text = Constants.buttonNormalTag
-        likeButton.tintColor = .systemRed
-    }
-
     // MARK: - Private IBAction
 
     @IBAction private func likeButtonAction(_ sender: Any) {
         guard likeButton.tag == 1 else {
-            likeButton.setImage(UIImage(systemName: Constants.heartFillImageName), for: .normal)
+            likeButton.setImage(UIImage(systemName: Constants.Items.heartFillImageName), for: .normal)
             likeButton.tintColor = .systemRed
             likeButton.tag = 1
-            likeCountLabel.text = Constants.buttonSelectedTag
+            likeCountLabel.text = Constants.Items.buttonSelectedTag
             return
         }
-        likeButton.setImage(UIImage(systemName: Constants.heartImageName), for: .normal)
-        likeCountLabel.text = Constants.buttonNormalTag
+        likeButton.setImage(UIImage(systemName: Constants.Items.heartImageName), for: .normal)
+        likeCountLabel.text = Constants.Items.buttonNormalTag
         likeButton.tag = 0
+    }
+
+    // MARK: - Private Method
+
+    private func setupUI() {
+        likeButton.setImage(UIImage(systemName: Constants.Items.heartImageName), for: .normal)
+        likeCountLabel.text = Constants.Items.buttonNormalTag
+        likeButton.tintColor = .systemRed
     }
 }

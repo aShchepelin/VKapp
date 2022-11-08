@@ -1,4 +1,4 @@
-// MyGroups.swift
+// Arrays.swift
 // Copyright © RoadMap. All rights reserved.
 
 /// Массив групп
@@ -16,10 +16,6 @@ var groups: [Group] = [
         groupName: Constants.GroupNames.butterflyBulletsName
     ),
     Group(
-        groupAvatarImageName: Constants.GroupAvatarNames.americanRaidersImageName,
-        groupName: Constants.GroupNames.americanRaidersName
-    ),
-    Group(
         groupAvatarImageName: Constants.GroupAvatarNames.newYorkMonkeysImageName,
         groupName: Constants.GroupNames.newYorkMonkeysName
     ),
@@ -30,5 +26,27 @@ var groups: [Group] = [
     Group(
         groupAvatarImageName: Constants.GroupAvatarNames.teamHopeImageName,
         groupName: Constants.GroupNames.teamHopeName
+    )
+]
+
+/// массив постов
+var posts: [News] = [
+    News(
+        userName: Constants.UserNames.connorLloydName,
+        postDate: Constants.Items.postDate,
+        userAvatarName: Constants.UserImageNames.connorLloydImageName,
+        postMassageText: Constants.Items.postText,
+        postImageName: Constants.GroupAvatarNames.redGeckosImageName,
+        likesCount: 12,
+        viewsCount: 150
+    ),
+    News(
+        userName: Constants.UserNames.connorLloydName,
+        postDate: Constants.Items.postDate,
+        userAvatarName: Constants.UserImageNames.connorLloydImageName,
+        postMassageText: Constants.Items.postText,
+        postImageName: Constants.GroupAvatarNames.butterflyBulletsImageName,
+        likesCount: 12,
+        viewsCount: 150
     )
 ]

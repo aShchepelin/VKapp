@@ -1,17 +1,21 @@
-// GroupsTableViewController.swift
+// AvailableGroupsTableViewController.swift
 // Copyright © RoadMap. All rights reserved.
 
 import UIKit
 
-/// Экран групп
-final class GroupsTableViewController: UITableViewController {
+/// Экран доступных групп
+final class AvailableGroupsTableViewController: UITableViewController {
     // MARK: - Private IBOutlets
 
     @IBOutlet private var groupsSearchBar: UISearchBar!
 
+    // MARK: - Public Properties
+
+    var closureForGroup: ((Group) -> Void)?
+
     // MARK: - Private Properties
 
-    private var myGroups: [Group] = [] {
+    private var availableGroups = groups {
         didSet {
             tableView.reloadData()
         }
@@ -32,12 +36,22 @@ final class GroupsTableViewController: UITableViewController {
 
     // MARK: - Public Methods
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard segue.identifier == Constants.Identifiers.addGroupIdentifier,
-              let availableTableVC = segue.destination as? AvailableGroupsTableViewController else { return }
-        availableTableVC.addGroup(myGroups) { [weak self] group in
-            self?.myGroups.append(group)
+    func addGroup(_ group: [Group], complition: @escaping ((Group) -> Void)) {
+        availableGroups = availableGroups.filter { groups in
+            !group.contains { myGroup in
+                myGroup == groups
+            }
         }
+        closureForGroup = complition
+    }
+
+    // MARK: - Private Methods
+
+    private func chooseGroup(_ indexPath: IndexPath) {
+        let group = availableGroups[indexPath.row]
+        closureForGroup?(group)
+//        tableView.reloadData()
+        navigationController?.popViewController(animated: true)
     }
 
     // MARK: - UITableViewDelegate, UITableViewDataSource
@@ -46,18 +60,7 @@ final class GroupsTableViewController: UITableViewController {
         if isFiltering {
             return searchResult.count
         } else {
-            return myGroups.count
-        }
-    }
-
-    override func tableView(
-        _ tableView: UITableView,
-        commit editingStyle: UITableViewCell.EditingStyle,
-        forRowAt indexPath: IndexPath
-    ) {
-        if editingStyle == .delete {
-            myGroups.remove(at: indexPath.row)
-            tableView.reloadData()
+            return availableGroups.count
         }
     }
 
@@ -65,19 +68,24 @@ final class GroupsTableViewController: UITableViewController {
         guard let cell = tableView
             .dequeueReusableCell(
                 withIdentifier: Constants.Identifiers
-                    .groupsCellIdentifier
-            ) as? MyGroupsTableViewCell else { return UITableViewCell() }
-        let group = isFiltering ? searchResult[indexPath.row] : myGroups[indexPath.row]
+                    .availableGroupsCellIdentifier
+            ) as? AvailableGroupTableViewCell
+        else { return UITableViewCell() }
+        let group = isFiltering ? searchResult[indexPath.row] : availableGroups[indexPath.row]
         cell.configureCell(group)
         return cell
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        chooseGroup(indexPath)
     }
 }
 
 // MARK: - UISearchBarDelegate
 
-extension GroupsTableViewController: UISearchBarDelegate {
+extension AvailableGroupsTableViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        searchResult = myGroups.filter { $0.groupName.lowercased().contains(searchText.lowercased()) }
+        searchResult = availableGroups.filter { $0.groupName.lowercased().contains(searchText.lowercased()) }
         isSearching = true
         tableView.reloadData()
     }

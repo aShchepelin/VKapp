@@ -13,19 +13,19 @@ final class ShadowView: UIView {
 
     // MARK: - Private Properties
 
-    @IBInspectable private var shadowRadius: CGFloat = 8 {
+    private var shadowRadius: CGFloat = 8 {
         didSet {
             setNeedsDisplay()
         }
     }
 
-    @IBInspectable private var shadowOpacity: Float = 0.5 {
+    private var shadowOpacity: Float = 0.5 {
         didSet {
             setNeedsDisplay()
         }
     }
 
-    @IBInspectable private var shadowColor: UIColor = .black {
+    private var shadowColor: UIColor = .black {
         didSet {
             setNeedsDisplay()
         }

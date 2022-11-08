@@ -51,6 +51,30 @@ enum Constants {
         static let friendCellIdentifier = "friendCell"
         static let addGroupIdentifier = "addGroup"
         static let availableGroupsCellIdentifier = "availableGroupsCell"
-        static let friendCollectionViewController = "friendCollectionVC"
+        static let friendCollectionViewControllerIdentifier = "friendCollectionVC"
+        static let newsViewControllerIdentifier = "news"
+    }
+
+    enum Items {
+        static let postDate = "01.12.2022"
+        static let postText = """
+        Переступив границу зрелых лет,
+        Я в темный лес забрел и заблудился. И понял, что назад дороги нет...
+        4 Где взять слова, которыми б решился Я этот лес угрюмый описать,
+        Где ум померк и только ужас длился:
+        7 Так даже смерть не может испугать...
+        В глухом краю, зловещей тьмой одетом, Чего угодно мог я ожидать,
+        10 Но только не спасения; нигде там
+        Я не нашел, объятый смутным сном, Пути, что мне знаком по всем приметам.
+        """
+        static let heartImageName = "heart"
+        static let heartFillImageName = "heart.fill"
+        static let buttonSelectedTag = "1"
+        static let buttonNormalTag = "0"
+    }
+
+    enum Colors {
+        static let backgroundColorName = "BlueBackground"
+        static let placeholderColorName = "placeholderTextColor"
     }
 }
