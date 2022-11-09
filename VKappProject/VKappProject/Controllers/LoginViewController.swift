@@ -22,6 +22,10 @@ final class LoginViewController: UIViewController {
     @IBOutlet private var loginTextField: UITextField!
     @IBOutlet private var passwordTextField: UITextField!
 
+    @IBOutlet private var firstDotView: UIView!
+    @IBOutlet private var secondDotView: UIView!
+    @IBOutlet private var thirdDotView: UIView!
+
     // MARK: - Lifeсycle
 
     override func viewDidLoad() {
@@ -32,6 +36,7 @@ final class LoginViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         notificationObserverForKeyboard()
+        loadingAnimate()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -112,5 +117,19 @@ final class LoginViewController: UIViewController {
     private func setupUI() {
         loginTextField.setLeftPaddingPoints(10)
         passwordTextField.setLeftPaddingPoints(10)
+    }
+
+    private func loadingAnimate() {
+        UIView.animate(withDuration: 0.7, delay: 0.4, options: [.autoreverse, .repeat]) {
+            self.firstDotView.alpha = 0
+        }
+
+        UIView.animate(withDuration: 0.7, delay: 0.7, options: [.autoreverse, .repeat]) {
+            self.secondDotView.alpha = 0
+        }
+
+        UIView.animate(withDuration: 0.7, delay: 1, options: [.autoreverse, .repeat]) {
+            self.thirdDotView.alpha = 0
+        }
     }
 }

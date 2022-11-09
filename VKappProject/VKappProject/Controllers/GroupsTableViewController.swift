@@ -5,19 +5,36 @@ import UIKit
 
 /// Экран групп
 final class GroupsTableViewController: UITableViewController {
+    // MARK: - Private IBOutlets
+
+    @IBOutlet private var groupsSearchBar: UISearchBar!
+
     // MARK: - Private Properties
 
-    private var myGroups = [groups.first].compactMap { $0 } {
+    private var myGroups: [Group] = [] {
         didSet {
             tableView.reloadData()
         }
     }
 
+    private lazy var searchResult: [Group] = []
+
+    private var isSearchResultEmpty: Bool {
+        guard let text = groupsSearchBar.text else { return false }
+        return text.isEmpty
+    }
+
+    private var isFiltering: Bool {
+        isSearching && !isSearchResultEmpty
+    }
+
+    private var isSearching = false
+
     // MARK: - Public Methods
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard segue.identifier == Constants.Identifiers.addGroupIdentifier,
-              let availableTableVC = segue.destination as? AvailableTableViewController else { return }
+              let availableTableVC = segue.destination as? AvailableGroupsTableViewController else { return }
         availableTableVC.addGroup(myGroups) { [weak self] group in
             self?.myGroups.append(group)
         }
@@ -26,7 +43,11 @@ final class GroupsTableViewController: UITableViewController {
     // MARK: - UITableViewDelegate, UITableViewDataSource
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        myGroups.count
+        if isFiltering {
+            return searchResult.count
+        } else {
+            return myGroups.count
+        }
     }
 
     override func tableView(
@@ -36,6 +57,7 @@ final class GroupsTableViewController: UITableViewController {
     ) {
         if editingStyle == .delete {
             myGroups.remove(at: indexPath.row)
+            tableView.reloadData()
         }
     }
 
@@ -45,7 +67,24 @@ final class GroupsTableViewController: UITableViewController {
                 withIdentifier: Constants.Identifiers
                     .groupsCellIdentifier
             ) as? MyGroupsTableViewCell else { return UITableViewCell() }
-        cell.configureCell(groups[indexPath.row])
+        let group = isFiltering ? searchResult[indexPath.row] : myGroups[indexPath.row]
+        cell.configureCell(group)
         return cell
+    }
+}
+
+// MARK: - UISearchBarDelegate
+
+extension GroupsTableViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        searchResult = myGroups.filter { $0.groupName.lowercased().contains(searchText.lowercased()) }
+        isSearching = true
+        tableView.reloadData()
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        isSearching = false
+        searchBar.text = ""
+        tableView.reloadData()
     }
 }
