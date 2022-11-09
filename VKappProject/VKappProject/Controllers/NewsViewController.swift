@@ -28,7 +28,7 @@ final class NewsViewController: UIViewController {
 
 extension NewsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        posts.count
+        News.posts.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -38,7 +38,7 @@ extension NewsViewController: UITableViewDelegate, UITableViewDataSource {
                     .newsViewControllerIdentifier
             ) as? NewsTableViewCell
         else { return UITableViewCell() }
-        cell.configureCell(posts[indexPath.row])
+        cell.configureCell(News.posts[indexPath.row])
         return cell
     }
 }

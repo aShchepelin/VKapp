@@ -19,13 +19,13 @@ final class GroupsTableViewController: UITableViewController {
 
     private lazy var searchResult: [Group] = []
 
-    private var searchResultIsEmpty: Bool {
+    private var isSearchResultEmpty: Bool {
         guard let text = groupsSearchBar.text else { return false }
         return text.isEmpty
     }
 
     private var isFiltering: Bool {
-        isSearching && !searchResultIsEmpty
+        isSearching && !isSearchResultEmpty
     }
 
     private var isSearching = false

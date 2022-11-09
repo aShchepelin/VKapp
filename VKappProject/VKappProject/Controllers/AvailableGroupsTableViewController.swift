@@ -15,7 +15,7 @@ final class AvailableGroupsTableViewController: UITableViewController {
 
     // MARK: - Private Properties
 
-    private var availableGroups = groups {
+    private var availableGroups = Group.groups {
         didSet {
             tableView.reloadData()
         }
@@ -50,7 +50,6 @@ final class AvailableGroupsTableViewController: UITableViewController {
     private func chooseGroup(_ indexPath: IndexPath) {
         let group = availableGroups[indexPath.row]
         closureForGroup?(group)
-//        tableView.reloadData()
         navigationController?.popViewController(animated: true)
     }
 

@@ -70,7 +70,8 @@ final class FriendListTableViewController: UITableViewController {
     // MARK: - UITableViewDelegate, UITableViewDataSource
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        sections[sectionTitles[section]]?.count ?? 0
+        guard let sections = sections[sectionTitles[section]]?.count else { return 0 }
+        return sections
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

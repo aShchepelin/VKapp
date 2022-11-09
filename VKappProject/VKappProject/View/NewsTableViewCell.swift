@@ -14,7 +14,6 @@ final class NewsTableViewCell: UITableViewCell {
     @IBOutlet private var postImageView: UIImageView!
     @IBOutlet private var likeCountLabel: UILabel!
     @IBOutlet private var viewsCountLabel: UILabel!
-
     @IBOutlet private var likeButton: UIButton!
 
     // MARK: - Private Properties
@@ -30,15 +29,15 @@ final class NewsTableViewCell: UITableViewCell {
 
     // MARK: - Public Methods
 
-    func configureCell(_ model: News) {
-        avatarImageView.image = UIImage(named: model.userAvatarName)
-        nickNameLabel.text = model.userName
-        postDateLabel.text = model.postDate
-        postTextLabel.text = model.postMassageText
-        postImageView.image = UIImage(named: model.postImageName)
-        likeCountLabel.text = "\(model.likesCount)"
-        viewsCountLabel.text = "\(model.viewsCount)"
-        likeCounter = model.likesCount
+    func configureCell(_ news: News) {
+        avatarImageView.image = UIImage(named: news.userAvatarName)
+        nickNameLabel.text = news.userName
+        postDateLabel.text = news.postDate
+        postTextLabel.text = news.postMassageText
+        postImageView.image = UIImage(named: news.postImageName)
+        likeCountLabel.text = "\(news.likesCount)"
+        viewsCountLabel.text = "\(news.viewsCount)"
+        likeCounter = news.likesCount
     }
 
     // MARK: - Private IBAction
@@ -81,14 +80,14 @@ final class NewsTableViewCell: UITableViewCell {
     }
 
     private func animationForLikeCount() {
-        let animation = CABasicAnimation(keyPath: "position")
+        let animation = CABasicAnimation(keyPath: Constants.Items.positionForAnimation)
         animation.duration = 0.07
         animation.repeatCount = 4
         animation.autoreverses = true
         animation.fromValue = NSValue(cgPoint: CGPoint(x: likeCountLabel.center.x - 3, y: likeCountLabel.center.y))
         animation.toValue = NSValue(cgPoint: CGPoint(x: likeCountLabel.center.x + 3, y: likeCountLabel.center.y))
 
-        likeCountLabel.layer.add(animation, forKey: "position")
+        likeCountLabel.layer.add(animation, forKey: Constants.Items.positionForAnimation)
     }
 
     private func setupUI() {
