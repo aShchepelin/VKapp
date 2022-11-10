@@ -34,7 +34,6 @@ class CustomInteractiveTransition: UIPercentDrivenInteractiveTransition {
                 animated:
                 true
             )
-
         case .changed:
             let translation = recognizer.translation(in: recognizer.view)
             let relativeTranslation = translation.y / (
@@ -44,18 +43,15 @@ class CustomInteractiveTransition: UIPercentDrivenInteractiveTransition {
             let progress = max(0, min(1, relativeTranslation))
             shouldFinish = progress > 0.33
             update(progress)
-
         case .ended:
             hasStarted = false
             if shouldFinish { finish()
             } else {
                 cancel()
             }
-
         case .cancelled:
             hasStarted = false
             cancel()
-
         default: return
         }
     }

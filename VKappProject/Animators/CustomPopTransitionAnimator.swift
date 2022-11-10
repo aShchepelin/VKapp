@@ -18,10 +18,8 @@ final class CustomPopTransitionAnimator: NSObject, UIViewControllerAnimatedTrans
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         guard let source = transitionContext.viewController(forKey: .from),
               let destination = transitionContext.viewController(forKey: .to) else { return }
-
         let width = source.view.bounds.width
         let height = source.view.bounds.height
-
         transitionContext.containerView.addSubview(destination.view)
         destination.view.frame = source.view.frame
         destination.view.transform = CGAffineTransform(translationX: -width, y: 0)

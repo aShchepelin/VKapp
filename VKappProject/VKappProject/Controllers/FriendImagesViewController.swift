@@ -39,13 +39,10 @@ final class FriendImagesViewController: UIViewController {
                 }
             )
             interactiveAnimator.pauseAnimation()
-
         case .changed:
             let translation = recognizer.translation(in: view)
-
             interactiveAnimator.fractionComplete = abs(translation.x / 100)
             photoImageView.transform = CGAffineTransform(translationX: translation.x, y: 0)
-
         case .ended:
             interactiveAnimator.stopAnimation(true)
             if recognizer.translation(in: view).x < 0 {
@@ -61,7 +58,6 @@ final class FriendImagesViewController: UIViewController {
                 self.photoImageView.alpha = 1
             }
             interactiveAnimator?.startAnimation()
-
         default: break
         }
         photoImageView.image = allImages[currentImageCounter]
