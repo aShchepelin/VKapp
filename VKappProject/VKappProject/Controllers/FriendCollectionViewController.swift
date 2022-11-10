@@ -9,6 +9,26 @@ final class FriendCollectionViewController: UICollectionViewController {
 
     var friendAvatarName = ""
 
+    // MARK: - Private Properies
+
+    private let images = [
+        UIImage(named: Constants.UserImageNames.ireneNormanImageName),
+        UIImage(named: Constants.UserImageNames.emilieRivasImageName),
+        UIImage(named: Constants.UserImageNames.connorLloydImageName)
+    ]
+
+    // MARK: - Public Methods
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Constants.Identifiers.segueFriendImages {
+            guard let friendImages = segue.destination as? FriendImagesViewController else { return }
+            if let indexPath = collectionView.indexPathsForSelectedItems?.first {
+                friendImages.allImages = images
+                friendImages.currentImageCounter = indexPath.row
+            }
+        }
+    }
+
     // MARK: UICollectionViewDataSource, UICollectionViewDelegate
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

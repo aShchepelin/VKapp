@@ -50,7 +50,10 @@ final class FriendListTableViewController: UITableViewController {
         guard segue.identifier == Constants.Identifiers.friendCollectionViewControllerIdentifier,
               let friendCollectionViewController = segue.destination as? FriendCollectionViewController else { return }
         guard let indexPath = tableView.indexPathForSelectedRow else { return }
-        friendCollectionViewController.friendAvatarName = users[indexPath.row].avatarImageName
+        let keys = sections.keys.sorted()
+        let key = keys[indexPath.section]
+        guard let friendAvatar = sections[key]?[indexPath.row] else { return }
+        friendCollectionViewController.friendAvatarName = friendAvatar.avatarImageName
     }
 
     // MARK: - Private Method

@@ -53,6 +53,7 @@ enum Constants {
         static let availableGroupsCellIdentifier = "availableGroupsCell"
         static let friendCollectionViewControllerIdentifier = "friendCollectionVC"
         static let newsViewControllerIdentifier = "news"
+        static let segueFriendImages = "friendImages"
     }
 
     enum Items {
