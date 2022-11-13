@@ -3,7 +3,7 @@
 
 import UIKit
 
-///  NavigationController
+/// Кастомный NavigationController
 final class CustomNavigationController: UINavigationController {
     // MARK: - Private Properties
 
@@ -13,11 +13,12 @@ final class CustomNavigationController: UINavigationController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-       setupUI()
+
+        setupUI()
     }
-    
+
     // MARK: - Private Methods
-    
+
     private func setupUI() {
         delegate = self
     }
@@ -46,5 +47,5 @@ extension CustomNavigationController: UINavigationControllerDelegate {
         interactionControllerFor animationController:
         UIViewControllerAnimatedTransitioning
     )
-        -> UIViewControllerInteractiveTransitioning? { interactiveTransition.hasStarted ? interactiveTransition : nil }
+        -> UIViewControllerInteractiveTransitioning? { interactiveTransition.isStarted ? interactiveTransition : nil }
 }

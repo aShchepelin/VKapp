@@ -3,16 +3,12 @@
 
 import UIKit
 
-/// Аниматор Pop
+/// Каcтомный переход вперед, взамен стандартного  push
 final class CustomPushTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
-    // MARK: - Private Properties
-
-    private let duration: TimeInterval = 0.5
-
     // MARK: - Public Methods
 
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        duration
+        Constants.AnimationParameters.duration
     }
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
@@ -22,21 +18,24 @@ final class CustomPushTransitionAnimator: NSObject, UIViewControllerAnimatedTran
         let height = source.view.bounds.height
         transitionContext.containerView.addSubview(destination.view)
         destination.view.frame = source.view.frame
-        let rotation = CGAffineTransform(rotationAngle: .pi / -2)
+        let rotation = CGAffineTransform(rotationAngle: Constants.AnimationParameters.rotationAngle)
         destination.view.transform = rotation
         destination.view.center = CGPoint(x: width + height / 2, y: width / 2)
         UIView.animateKeyframes(
-            withDuration: duration,
+            withDuration: Constants.AnimationParameters.duration,
             delay: 0,
             options: .calculationModePaced
         ) {
-            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
-                let translation = CGAffineTransform(translationX: -200, y: 0)
-                let rotation = CGAffineTransform(scaleX: 0.8, y: 0.8)
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: Constants.AnimationParameters.duration) {
+                let translation = CGAffineTransform(translationX: Constants.AnimationParameters.translationXPoints, y: 0)
+                let rotation = CGAffineTransform(
+                    scaleX: Constants.AnimationParameters.scale,
+                    y: Constants.AnimationParameters.scale
+                )
                 source.view.transform = translation.concatenating(rotation)
             }
 
-            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: Constants.AnimationParameters.duration) {
                 destination.view.transform = .identity
                 destination.view.center = source.view.center
             }

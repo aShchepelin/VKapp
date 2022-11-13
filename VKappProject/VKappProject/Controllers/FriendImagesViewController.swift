@@ -13,8 +13,9 @@ final class FriendImagesViewController: UIViewController {
 
     var allImages: [UIImage?] = []
     var currentImageCounter = 0
-    
+
     // MARK: - Private Properties
+
     private var interactiveAnimator: UIViewPropertyAnimator!
 
     // MARK: - LifeCycle
@@ -31,10 +32,10 @@ final class FriendImagesViewController: UIViewController {
         case .began:
             interactiveAnimator?.startAnimation()
             interactiveAnimator = UIViewPropertyAnimator(
-                duration: 0.5,
+                duration: Constants.AnimationParameters.duration,
                 curve: .easeInOut,
                 animations: {
-                    self.photoImageView.alpha = 0.5
+                    self.photoImageView.alpha = Constants.AnimationParameters.imageAlpha
                     self.photoImageView.transform = .init(scaleX: 1.5, y: 1.5)
                 }
             )

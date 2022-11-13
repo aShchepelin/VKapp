@@ -20,7 +20,7 @@ final class FriendCollectionViewController: UICollectionViewController {
     // MARK: - Public Methods
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == Constants.Identifiers.segueFriendImages {
+        if segue.identifier == Constants.Identifiers.segueFriendImagesIdentifier {
             guard let friendImages = segue.destination as? FriendImagesViewController else { return }
             if let indexPath = collectionView.indexPathsForSelectedItems?.first {
                 friendImages.allImages = images

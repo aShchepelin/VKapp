@@ -3,16 +3,12 @@
 
 import UIKit
 
-/// Аниматор Pop
+/// Каcтомный переход назад, взамен стандартного  pop
 final class CustomPopTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
-    // MARK: - Private Properties
-
-    private let duration: TimeInterval = 0.35
-
     // MARK: - Public Methods
 
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        duration
+        Constants.AnimationParameters.duration
     }
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
@@ -23,21 +19,24 @@ final class CustomPopTransitionAnimator: NSObject, UIViewControllerAnimatedTrans
         transitionContext.containerView.addSubview(destination.view)
         destination.view.frame = source.view.frame
         destination.view.transform = CGAffineTransform(translationX: -width, y: 0)
-            .concatenating(CGAffineTransform(scaleX: 0.8, y: 0.8))
+            .concatenating(CGAffineTransform(
+                scaleX: Constants.AnimationParameters.scale,
+                y: Constants.AnimationParameters.scale
+            ))
         destination.view.center = CGPoint(x: width / 2, y: source.view.center.y)
         UIView.animateKeyframes(
-            withDuration: duration,
+            withDuration: Constants.AnimationParameters.duration,
             delay: 0,
             options: .calculationModePaced
         ) {
-            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: Constants.AnimationParameters.duration) {
                 let translation = CGAffineTransform(translationX: width, y: 0)
-                let rotation = CGAffineTransform(rotationAngle: .pi / -2)
+                let rotation = CGAffineTransform(rotationAngle: Constants.AnimationParameters.rotationAngle)
                 source.view.center = CGPoint(x: width + height / 2, y: width / 2)
                 source.view.transform = translation.concatenating(rotation)
             }
 
-            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: Constants.AnimationParameters.duration) {
                 destination.view.transform = .identity
             }
         } completion: { finished in

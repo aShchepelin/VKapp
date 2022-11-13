@@ -18,8 +18,13 @@ class CustomInteractiveTransition: UIPercentDrivenInteractiveTransition {
         }
     }
 
-    var hasStarted: Bool = false
-    var shouldFinish: Bool = false
+    // MARK: - Public Property
+
+    var isStarted: Bool = false
+
+    // MARK: - Private Property
+
+    private var isShouldFinish: Bool = false
 
     // MARK: - Private Methods
 
@@ -29,7 +34,7 @@ class CustomInteractiveTransition: UIPercentDrivenInteractiveTransition {
     ) {
         switch recognizer.state {
         case .began:
-            hasStarted = true
+            isStarted = true
             viewController?.navigationController?.popViewController(
                 animated:
                 true
@@ -38,19 +43,19 @@ class CustomInteractiveTransition: UIPercentDrivenInteractiveTransition {
             let translation = recognizer.translation(in: recognizer.view)
             let relativeTranslation = translation.y / (
                 recognizer.view?.bounds.width
-                    ?? 1
+                    ?? CGFloat(Constants.AnimationParameters.relativeTranslationDefaultValue)
             )
             let progress = max(0, min(1, relativeTranslation))
-            shouldFinish = progress > 0.33
+            isShouldFinish = progress > Constants.AnimationParameters.progressPercent
             update(progress)
         case .ended:
-            hasStarted = false
-            if shouldFinish { finish()
+            isStarted = false
+            if isShouldFinish { finish()
             } else {
                 cancel()
             }
         case .cancelled:
-            hasStarted = false
+            isStarted = false
             cancel()
         default: return
         }
