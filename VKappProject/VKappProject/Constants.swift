@@ -53,6 +53,7 @@ enum Constants {
         static let availableGroupsCellIdentifier = "availableGroupsCell"
         static let friendCollectionViewControllerIdentifier = "friendCollectionVC"
         static let newsViewControllerIdentifier = "news"
+        static let segueFriendImagesIdentifier = "friendImages"
     }
 
     enum Items {
@@ -77,5 +78,15 @@ enum Constants {
     enum Colors {
         static let backgroundColorName = "BlueBackground"
         static let placeholderColorName = "placeholderTextColor"
+    }
+
+    enum AnimationParameters {
+        static let duration = 0.5
+        static let imageAlpha = 0.5
+        static let relativeTranslationDefaultValue = 1
+        static let scale = 0.8
+        static let progressPercent = 0.33
+        static let rotationAngle: CGFloat = -90
+        static let translationXPoints: CGFloat = -200
     }
 }
