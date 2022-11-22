@@ -9,6 +9,10 @@ final class NewsViewController: UIViewController {
 
     @IBOutlet private var newsTableView: UITableView!
 
+    // MARK: - Private Properties
+
+    private let vkService = VKService()
+
     // MARK: - LifeCycle
 
     override func viewDidLoad() {
@@ -21,6 +25,10 @@ final class NewsViewController: UIViewController {
     private func setupUI() {
         newsTableView.delegate = self
         newsTableView.dataSource = self
+        vkService.loadFriendList()
+        vkService.loadFriendPhoto()
+        vkService.loadFriendGroups()
+        vkService.searchedGroups()
     }
 }
 

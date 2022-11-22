@@ -27,7 +27,10 @@ final class CustomPushTransitionAnimator: NSObject, UIViewControllerAnimatedTran
             options: .calculationModePaced
         ) {
             UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: Constants.AnimationParameters.duration) {
-                let translation = CGAffineTransform(translationX: Constants.AnimationParameters.translationXPoints, y: 0)
+                let translation = CGAffineTransform(
+                    translationX: Constants.AnimationParameters.translationXPoints,
+                    y: 0
+                )
                 let rotation = CGAffineTransform(
                     scaleX: Constants.AnimationParameters.scale,
                     y: Constants.AnimationParameters.scale

@@ -54,6 +54,7 @@ enum Constants {
         static let friendCollectionViewControllerIdentifier = "friendCollectionVC"
         static let newsViewControllerIdentifier = "news"
         static let segueFriendImagesIdentifier = "friendImages"
+        static let storyBoard = "Main"
     }
 
     enum Items {
@@ -88,5 +89,42 @@ enum Constants {
         static let progressPercent = 0.33
         static let rotationAngle: CGFloat = -90
         static let translationXPoints: CGFloat = -200
+    }
+
+    enum URLComponents {
+        static let baseURL = "https://api.vk.com/method/"
+        static let version = "&v=5.131"
+        static let friendsMethod = "friends.get?"
+        static let userId = "/user_ids="
+        static let accessToken = "&access_token="
+        static let friendsInfo = "&fields=nickname"
+        static let friendPhotoMethod = "photos.getAll?"
+        static let testOwnerId = "407524"
+        static let groupsMethod = "groups.get?"
+        static let searchGroupMethod = "groups.search?"
+        static let searchedText = "&q=D"
+    }
+
+    enum WebViewURLComponents {
+        static let scheme = "https"
+        static let host = "oauth.vk.com"
+        static let path = "/authorize"
+        static let clientIdName = "client_id"
+        static let clientIdValue = "51484017"
+        static let displayName = "display"
+        static let displayValue = "mobile"
+        static let redirectUriName = "redirect_uri"
+        static let redirectUriValue = "https://oauth.vk.com/blank.html"
+        static let scopeName = "scope"
+        static let scopeValue = "262150"
+        static let responseTypeName = "response_type"
+        static let responseTypeValue = "token"
+        static let versionName = "v"
+        static let versionValue = "5.68"
+        static let urlPath = "/blank.html"
+        static let ampersandSeparator = "&"
+        static let equalSeparator = "="
+        static let paramAccessToken = "access_token"
+        static let paramUserId = "user_id"
     }
 }
