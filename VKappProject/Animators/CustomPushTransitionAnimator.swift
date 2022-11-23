@@ -18,7 +18,7 @@ final class CustomPushTransitionAnimator: NSObject, UIViewControllerAnimatedTran
         let height = source.view.bounds.height
         transitionContext.containerView.addSubview(destination.view)
         destination.view.frame = source.view.frame
-        let rotation = CGAffineTransform(rotationAngle: Constants.AnimationParameters.rotationAngle)
+        let rotation = CGAffineTransform(rotationAngle: CGFloat(Constants.AnimationParameters.rotationAngle))
         destination.view.transform = rotation
         destination.view.center = CGPoint(x: width + height / 2, y: width / 2)
         UIView.animateKeyframes(
@@ -27,7 +27,10 @@ final class CustomPushTransitionAnimator: NSObject, UIViewControllerAnimatedTran
             options: .calculationModePaced
         ) {
             UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: Constants.AnimationParameters.duration) {
-                let translation = CGAffineTransform(translationX: Constants.AnimationParameters.translationXPoints, y: 0)
+                let translation = CGAffineTransform(
+                    translationX: CGFloat(Constants.AnimationParameters.translationXPoints),
+                    y: 0
+                )
                 let rotation = CGAffineTransform(
                     scaleX: Constants.AnimationParameters.scale,
                     y: Constants.AnimationParameters.scale

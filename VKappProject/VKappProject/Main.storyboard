@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="HQD-XL-MtT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="PHq-Me-jdQ">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -189,6 +189,40 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="986.39999999999998" y="-2.2488755622188905"/>
+        </scene>
+        <!--Authorization View Controller-->
+        <scene sceneID="pH3-vO-w0o">
+            <objects>
+                <viewController id="PHq-Me-jdQ" customClass="AuthorizationViewController" customModule="VKappProject" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="VoX-P8-ySE">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AWI-PS-US8">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="4KC-Dc-TYp"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="AWI-PS-US8" firstAttribute="top" secondItem="4KC-Dc-TYp" secondAttribute="top" id="CQn-lQ-PAI"/>
+                            <constraint firstItem="AWI-PS-US8" firstAttribute="leading" secondItem="4KC-Dc-TYp" secondAttribute="leading" id="Kmp-Aj-dPz"/>
+                            <constraint firstItem="AWI-PS-US8" firstAttribute="bottom" secondItem="4KC-Dc-TYp" secondAttribute="bottom" id="faU-7X-5Ne"/>
+                            <constraint firstItem="AWI-PS-US8" firstAttribute="trailing" secondItem="4KC-Dc-TYp" secondAttribute="trailing" id="k4L-RM-4zd"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="webView" destination="AWI-PS-US8" id="5aY-cp-9rf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="T4q-5q-FCO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="991.20000000000005" y="706.59670164917543"/>
         </scene>
         <!--FriendList-->
         <scene sceneID="CbG-8D-on0">
@@ -604,7 +638,7 @@
         <!--News-->
         <scene sceneID="PNL-3o-tBC">
             <objects>
-                <viewController id="wRW-VU-jok" customClass="NewsViewController" customModule="VKappProject" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="news" useStoryboardIdentifierAsRestorationIdentifier="YES" id="wRW-VU-jok" customClass="NewsViewController" customModule="VKappProject" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="wem-g5-n81">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
