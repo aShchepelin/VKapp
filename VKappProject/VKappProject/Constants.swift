@@ -87,22 +87,23 @@ enum Constants {
         static let relativeTranslationDefaultValue = 1
         static let scale = 0.8
         static let progressPercent = 0.33
-        static let rotationAngle: CGFloat = -90
-        static let translationXPoints: CGFloat = -200
+        static let rotationAngle = -90
+        static let translationXPoints = -200
     }
 
     enum URLComponents {
         static let baseURL = "https://api.vk.com/method/"
         static let version = "&v=5.131"
         static let friendsMethod = "friends.get?"
-        static let userId = "/user_ids="
-        static let accessToken = "&access_token="
+        static let userID = "/user_ids=\(Session.shared.userID)"
+        static let accessToken = "&access_token=\(Session.shared.token)"
         static let friendsInfo = "&fields=nickname"
         static let friendPhotoMethod = "photos.getAll?"
         static let testOwnerId = "407524"
         static let groupsMethod = "groups.get?"
         static let searchGroupMethod = "groups.search?"
         static let searchedText = "&q=D"
+        static let extended = "&extended=1"
     }
 
     enum WebViewURLComponents {

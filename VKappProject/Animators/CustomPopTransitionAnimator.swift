@@ -31,7 +31,7 @@ final class CustomPopTransitionAnimator: NSObject, UIViewControllerAnimatedTrans
         ) {
             UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: Constants.AnimationParameters.duration) {
                 let translation = CGAffineTransform(translationX: width, y: 0)
-                let rotation = CGAffineTransform(rotationAngle: Constants.AnimationParameters.rotationAngle)
+                let rotation = CGAffineTransform(rotationAngle: CGFloat(Constants.AnimationParameters.rotationAngle))
                 source.view.center = CGPoint(x: width + height / 2, y: width / 2)
                 source.view.transform = translation.concatenating(rotation)
             }
