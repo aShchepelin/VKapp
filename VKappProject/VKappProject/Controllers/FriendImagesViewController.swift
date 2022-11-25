@@ -11,7 +11,7 @@ final class FriendImagesViewController: UIViewController {
 
     // MARK: - Public Properties
 
-    var allImages: [UIImage?] = []
+    var allImages: [PhotoItem] = []
     var currentImageCounter = 0
 
     // MARK: - Private Properties
@@ -61,12 +61,14 @@ final class FriendImagesViewController: UIViewController {
             interactiveAnimator?.startAnimation()
         default: break
         }
-        photoImageView.image = allImages[currentImageCounter]
+        guard let url = URL(string: allImages[currentImageCounter].sizes.last?.url ?? "") else { return }
+        photoImageView.load(url: url)
     }
 
     private func setupUI() {
         let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(panGestureRecognizerAction))
         view.addGestureRecognizer(panRecognizer)
-        photoImageView.image = allImages[currentImageCounter]
+        guard let url = URL(string: allImages[currentImageCounter].sizes.last?.url ?? "") else { return }
+        photoImageView.load(url: url)
     }
 }

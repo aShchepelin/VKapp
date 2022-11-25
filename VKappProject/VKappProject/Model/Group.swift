@@ -1,35 +1,30 @@
 // Group.swift
 // Copyright © RoadMap. All rights reserved.
 
-/// Группа
-struct Group: Equatable {
-    let groupAvatarImageName: String
-    let groupName: String
+import RealmSwift
 
-    static let groups = [
-        Group(
-            groupAvatarImageName: Constants.GroupAvatarNames.americanRaidersImageName,
-            groupName: Constants.GroupNames.americanRaidersName
-        ),
-        Group(
-            groupAvatarImageName: Constants.GroupAvatarNames.awesomeStingersImageName,
-            groupName: Constants.GroupNames.awesomeStingersName
-        ),
-        Group(
-            groupAvatarImageName: Constants.GroupAvatarNames.butterflyBulletsImageName,
-            groupName: Constants.GroupNames.butterflyBulletsName
-        ),
-        Group(
-            groupAvatarImageName: Constants.GroupAvatarNames.newYorkMonkeysImageName,
-            groupName: Constants.GroupNames.newYorkMonkeysName
-        ),
-        Group(
-            groupAvatarImageName: Constants.GroupAvatarNames.redGeckosImageName,
-            groupName: Constants.GroupNames.redGeckosName
-        ),
-        Group(
-            groupAvatarImageName: Constants.GroupAvatarNames.teamHopeImageName,
-            groupName: Constants.GroupNames.teamHopeName
-        )
-    ]
+/// Группа
+struct Group: Decodable {
+    let response: ResponseGroup
+}
+
+/// Группы пользователя
+struct ResponseGroup: Codable {
+    let groups: [GroupItem]
+
+    enum CodingKeys: String, CodingKey {
+        case groups = "items"
+    }
+}
+
+/// Информация о группах
+final class GroupItem: Object, Codable {
+    @objc dynamic var id: Int
+    @objc dynamic var name: String
+    @objc dynamic var photo: String
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case photo = "photo_100"
+    }
 }

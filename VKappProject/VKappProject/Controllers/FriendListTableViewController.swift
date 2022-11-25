@@ -1,9 +1,10 @@
 // FriendListTableViewController.swift
 // Copyright © RoadMap. All rights reserved.
 
+import Alamofire
 import UIKit
 
-/// Экран списка друзей
+/// Список друзей
 final class FriendListTableViewController: UITableViewController {
     // MARK: - Private Enum
 
@@ -14,60 +15,76 @@ final class FriendListTableViewController: UITableViewController {
 
     // MARK: - Private Properties
 
-    private let users: [User] = [
-        User(
-            avatarImageName: Constants.UserImageNames.bryleeCollinsImageName,
-            name: Constants.UserNames.bryleeCollinsName
-        ),
-        User(avatarImageName: Constants.UserImageNames.emilieRivasImageName, name: Constants.UserNames.emilieRivasName),
-        User(avatarImageName: Constants.UserImageNames.connorLloydImageName, name: Constants.UserNames.connorLloydName),
-        User(avatarImageName: Constants.UserImageNames.ireneNormanImageName, name: Constants.UserNames.ireneNormanName),
-        User(
-            avatarImageName: Constants.UserImageNames.kamronThomasImageName,
-            name: Constants.UserNames.kamronThomasName
-        ),
-        User(
-            avatarImageName: Constants.UserImageNames.kaylynnGrossImageName,
-            name: Constants.UserNames.kaylynnGrossName
-        ),
-        User(avatarImageName: Constants.UserImageNames.kyleRosalesImageName, name: Constants.UserNames.kyleRosalesName),
-        User(avatarImageName: Constants.UserImageNames.martinSteinImageName, name: Constants.UserNames.martinSteinName)
-    ]
-
-    private var sections: [Character: [User]] = [:]
+    private var users: [UserItem] = []
+    private var sections: [Character: [UserItem]] = [:]
     private var sectionTitles: [Character] = []
+    private let service = VKAPIService()
 
     // MARK: - LifeCycle
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        groupingUser()
+        setupUI()
     }
 
     // MARK: - Public Method
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard segue.identifier == Constants.Identifiers.friendCollectionViewControllerIdentifier,
-              let friendCollectionViewController = segue.destination as? FriendCollectionViewController else { return }
-        guard let indexPath = tableView.indexPathForSelectedRow else { return }
-        let keys = sections.keys.sorted()
-        let key = keys[indexPath.section]
-        guard let friendAvatar = sections[key]?[indexPath.row] else { return }
-        friendCollectionViewController.friendAvatarName = friendAvatar.avatarImageName
+              let friendCollectionViewController = segue.destination as? FriendCollectionViewController,
+              let indexPath = tableView.indexPathForSelectedRow,
+              let id = getOneUser(indexPath: indexPath)?.id else { return }
+        friendCollectionViewController.id = String(id)
     }
 
     // MARK: - Private Method
 
+    private func setupUI() {
+        fetchFriendRequest()
+    }
+
+    private func setupFriends() {
+        DispatchQueue.main.async { [self] in
+            self.groupingUser()
+            self.sectionTitles = Array(sections.keys).sorted()
+            self.tableView.reloadData()
+        }
+    }
+
+    private func getOneUser(indexPath: IndexPath) -> UserItem? {
+        let firstChar = sections.keys.sorted()[indexPath.section]
+        guard let users = sections[firstChar] else { return nil }
+        let user = users[indexPath.row]
+        return user
+    }
+
+    private func fetchFriendRequest() {
+        AF
+            .request(
+                "\(Constants.URLComponents.baseURL)\(RequestType.friends.urlString)\(Constants.URLComponents.version)"
+            )
+            .responseData { response in
+                guard let data = response.value else { return }
+                do {
+                    let user = try JSONDecoder().decode(User.self, from: data)
+                    self.users = user.response.friends
+                    self.setupFriends()
+                    print(user)
+                } catch {
+                    print(error)
+                }
+            }
+    }
+
     private func groupingUser() {
         for userName in users {
-            guard let firstLetter = userName.name.first else { return }
+            guard let firstLetter = userName.lastName.first else { return }
             if sections[firstLetter] != nil {
                 sections[firstLetter]?.append(userName)
             } else {
                 sections[firstLetter] = [userName]
             }
         }
-        sectionTitles = Array(sections.keys).sorted()
     }
 
     // MARK: - UITableViewDelegate, UITableViewDataSource

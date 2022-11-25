@@ -55,6 +55,9 @@ enum Constants {
         static let newsViewControllerIdentifier = "news"
         static let segueFriendImagesIdentifier = "friendImages"
         static let storyBoard = "Main"
+        static let friendsTableViewControllerIdentifier = "friendsTableViewController"
+        static let groupsTableViewControllerIdentifier = "groupsTableViewController"
+        static let loginViewControllerIdentifier = "loginViewController"
     }
 
     enum Items {
@@ -97,13 +100,14 @@ enum Constants {
         static let friendsMethod = "friends.get?"
         static let userID = "/user_ids=\(Session.shared.userID)"
         static let accessToken = "&access_token=\(Session.shared.token)"
-        static let friendsInfo = "&fields=nickname"
+        static let friendsInfo = "&fields=photo_100"
         static let friendPhotoMethod = "photos.getAll?"
         static let testOwnerId = "407524"
         static let groupsMethod = "groups.get?"
         static let searchGroupMethod = "groups.search?"
-        static let searchedText = "&q=D"
+        static let searchedQuery = "&q="
         static let extended = "&extended=1"
+        static let ownerID = "&owner_id="
     }
 
     enum WebViewURLComponents {

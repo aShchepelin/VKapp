@@ -12,9 +12,10 @@ final class AvailableGroupTableViewCell: UITableViewCell {
 
     // MARK: - Public Method
 
-    func configureCell(_ model: Group) {
-        groupNameLabel.text = model.groupName
-        groupImageView.image = UIImage(named: model.groupAvatarImageName)
+    func configureCell(_ model: GroupItem) {
+        groupNameLabel.text = model.name
+        guard let url = URL(string: model.photo) else { return }
+        groupImageView.load(url: url)
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(avatarDidTapAction))
         groupImageView.addGestureRecognizer(gestureRecognizer)
         groupImageView.isUserInteractionEnabled = true

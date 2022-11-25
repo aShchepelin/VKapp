@@ -1,6 +1,7 @@
 // GroupsTableViewController.swift
 // Copyright © RoadMap. All rights reserved.
 
+import Alamofire
 import UIKit
 
 /// Экран групп
@@ -11,13 +12,13 @@ final class GroupsTableViewController: UITableViewController {
 
     // MARK: - Private Properties
 
-    private var myGroups: [Group] = [] {
+    private var myGroups: [GroupItem] = [] {
         didSet {
             tableView.reloadData()
         }
     }
 
-    private lazy var searchResult: [Group] = []
+    private lazy var searchResult: [GroupItem] = []
 
     private var isSearchResultEmpty: Bool {
         guard let text = groupsSearchBar.text else { return false }
@@ -30,14 +31,41 @@ final class GroupsTableViewController: UITableViewController {
 
     private var isSearching = false
 
-    // MARK: - Public Methods
+    // MARK: - LifeCycle
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard segue.identifier == Constants.Identifiers.addGroupIdentifier,
-              let availableTableVC = segue.destination as? AvailableGroupsTableViewController else { return }
-        availableTableVC.addGroup(myGroups) { [weak self] group in
-            self?.myGroups.append(group)
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        setupUI()
+    }
+
+    // MARK: - Private Methods
+
+    private func setupUI() {
+        fetchGroupRequest()
+    }
+
+    private func reloadData() {
+        DispatchQueue.main.async { [self] in
+            self.tableView.reloadData()
         }
+    }
+
+    private func fetchGroupRequest() {
+        AF
+            .request(
+                "\(Constants.URLComponents.baseURL)\(RequestType.groups.urlString)\(Constants.URLComponents.version)"
+            )
+            .responseData { response in
+                guard let data = response.value else { return }
+                do {
+                    let group = try JSONDecoder().decode(Group.self, from: data)
+                    self.myGroups = group.response.groups
+                    self.reloadData()
+                    print(group)
+                } catch {
+                    print(error)
+                }
+            }
     }
 
     // MARK: - UITableViewDelegate, UITableViewDataSource
@@ -77,7 +105,7 @@ final class GroupsTableViewController: UITableViewController {
 
 extension GroupsTableViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        searchResult = myGroups.filter { $0.groupName.lowercased().contains(searchText.lowercased()) }
+        searchResult = myGroups.filter { $0.name.lowercased().contains(searchText.lowercased()) }
         isSearching = true
         tableView.reloadData()
     }

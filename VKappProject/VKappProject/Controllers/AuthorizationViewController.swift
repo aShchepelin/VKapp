@@ -68,11 +68,12 @@ extension AuthorizationViewController: WKNavigationDelegate {
         Session.shared.userID = userId
         decisionHandler(.cancel)
         let storyBoard = UIStoryboard(name: Constants.Identifiers.storyBoard, bundle: nil)
-        guard let vc = storyBoard
+        let vc = storyBoard
             .instantiateViewController(
                 withIdentifier: Constants.Identifiers
-                    .newsViewControllerIdentifier
-            ) as? NewsViewController else { return }
+                    .loginViewControllerIdentifier
+            )
+        vc.modalPresentationStyle = .fullScreen
         present(vc, animated: false, completion: nil)
     }
 }

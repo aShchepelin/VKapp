@@ -12,8 +12,9 @@ final class MyGroupsTableViewCell: UITableViewCell {
 
     // MARK: - Public Method
 
-    func configureCell(_ model: Group) {
-        groupNameLabel.text = model.groupName
-        groupAvatarImageView.image = UIImage(named: model.groupAvatarImageName)
+    func configureCell(_ model: GroupItem) {
+        groupNameLabel.text = model.name
+        guard let url = URL(string: model.photo) else { return }
+        groupAvatarImageView.load(url: url)
     }
 }
