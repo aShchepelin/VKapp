@@ -8,7 +8,7 @@ import UIKit
 final class FriendCollectionViewController: UICollectionViewController {
     // MARK: - Public Properties
 
-    var id = ""
+    var id = Constants.Items.emptyString
 
     // MARK: - Private Properties
 

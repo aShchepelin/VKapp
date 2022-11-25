@@ -16,7 +16,7 @@ final class FriendListTableViewController: UITableViewController {
     // MARK: - Private Properties
 
     private var users: [UserItem] = []
-    private var sections: [Character: [UserItem]] = [:]
+    private var sectionsMap: [Character: [UserItem]] = [:]
     private var sectionTitles: [Character] = []
     private let service = VKAPIService()
 
@@ -46,14 +46,14 @@ final class FriendListTableViewController: UITableViewController {
     private func setupFriends() {
         DispatchQueue.main.async { [self] in
             self.groupingUser()
-            self.sectionTitles = Array(sections.keys).sorted()
+            self.sectionTitles = Array(sectionsMap.keys).sorted()
             self.tableView.reloadData()
         }
     }
 
     private func getOneUser(indexPath: IndexPath) -> UserItem? {
-        let firstChar = sections.keys.sorted()[indexPath.section]
-        guard let users = sections[firstChar] else { return nil }
+        let firstChar = sectionsMap.keys.sorted()[indexPath.section]
+        guard let users = sectionsMap[firstChar] else { return nil }
         let user = users[indexPath.row]
         return user
     }
@@ -63,12 +63,12 @@ final class FriendListTableViewController: UITableViewController {
             .request(
                 "\(Constants.URLComponents.baseURL)\(RequestType.friends.urlString)\(Constants.URLComponents.version)"
             )
-            .responseData { response in
+            .responseData { [weak self] response in
                 guard let data = response.value else { return }
                 do {
                     let user = try JSONDecoder().decode(User.self, from: data)
-                    self.users = user.response.friends
-                    self.setupFriends()
+                    self?.users = user.response.friends
+                    self?.setupFriends()
                     print(user)
                 } catch {
                     print(error)
@@ -79,10 +79,10 @@ final class FriendListTableViewController: UITableViewController {
     private func groupingUser() {
         for userName in users {
             guard let firstLetter = userName.lastName.first else { return }
-            if sections[firstLetter] != nil {
-                sections[firstLetter]?.append(userName)
+            if sectionsMap[firstLetter] != nil {
+                sectionsMap[firstLetter]?.append(userName)
             } else {
-                sections[firstLetter] = [userName]
+                sectionsMap[firstLetter] = [userName]
             }
         }
     }
@@ -90,7 +90,7 @@ final class FriendListTableViewController: UITableViewController {
     // MARK: - UITableViewDelegate, UITableViewDataSource
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let sections = sections[sectionTitles[section]]?.count else { return 0 }
+        guard let sections = sectionsMap[sectionTitles[section]]?.count else { return 0 }
         return sections
     }
 
@@ -100,14 +100,14 @@ final class FriendListTableViewController: UITableViewController {
                 withIdentifier: Constants.Identifiers
                     .friendListCellIdentifier
             ) as? FriendListTableViewCell,
-            let groupedUser = sections[sectionTitles[indexPath.section]]?[indexPath.row]
+            let groupedUser = sectionsMap[sectionTitles[indexPath.section]]?[indexPath.row]
         else { return UITableViewCell() }
         cell.configureCell(groupedUser)
         return cell
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        sections.count
+        sectionsMap.count
     }
 
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {

@@ -4,7 +4,7 @@
 import Alamofire
 import UIKit
 
-/// Возможные группы
+/// Доступные группы
 final class AvailableGroupsTableViewController: UITableViewController {
     // MARK: - Private IBOutlets
 
@@ -44,7 +44,7 @@ final class AvailableGroupsTableViewController: UITableViewController {
             }
     }
 
-    // MARK: - UITableViewDelegate, UITableViewDataSource
+    // MARK: - UITableViewDataSource
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         searchResult.count
@@ -72,7 +72,7 @@ extension AvailableGroupsTableViewController: UISearchBarDelegate {
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.text = ""
+        searchBar.text = Constants.Items.emptyString
         tableView.reloadData()
     }
 }

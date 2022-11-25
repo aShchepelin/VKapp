@@ -55,12 +55,12 @@ final class GroupsTableViewController: UITableViewController {
             .request(
                 "\(Constants.URLComponents.baseURL)\(RequestType.groups.urlString)\(Constants.URLComponents.version)"
             )
-            .responseData { response in
+            .responseData { [weak self] response in
                 guard let data = response.value else { return }
                 do {
                     let group = try JSONDecoder().decode(Group.self, from: data)
-                    self.myGroups = group.response.groups
-                    self.reloadData()
+                    self?.myGroups = group.response.groups
+                    self?.reloadData()
                     print(group)
                 } catch {
                     print(error)

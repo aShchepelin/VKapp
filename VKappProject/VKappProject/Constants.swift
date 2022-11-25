@@ -77,6 +77,7 @@ enum Constants {
         static let buttonSelectedTag = "1"
         static let buttonNormalTag = "0"
         static let positionForAnimation = "position"
+        static let emptyString = ""
     }
 
     enum Colors {
