@@ -11,8 +11,8 @@ final class FriendImagesViewController: UIViewController {
 
     // MARK: - Public Properties
 
-    var allImages: [PhotoItem] = []
-    var currentImageCounter = 0
+    var photoItems: [PhotoItem] = []
+    var imageCurrentIndex = 0
 
     // MARK: - Private Properties
 
@@ -47,11 +47,11 @@ final class FriendImagesViewController: UIViewController {
         case .ended:
             interactiveAnimator.stopAnimation(true)
             if recognizer.translation(in: view).x < 0 {
-                if currentImageCounter < allImages
-                    .count - 1 { currentImageCounter += 1 }
+                if imageCurrentIndex < photoItems
+                    .count - 1 { imageCurrentIndex += 1 }
             } else {
-                if currentImageCounter != 0 {
-                    currentImageCounter -= 1
+                if imageCurrentIndex != 0 {
+                    imageCurrentIndex -= 1
                 }
             }
             interactiveAnimator.addAnimations {
@@ -61,14 +61,14 @@ final class FriendImagesViewController: UIViewController {
             interactiveAnimator?.startAnimation()
         default: break
         }
-        guard let url = URL(string: allImages[currentImageCounter].sizes.last?.url ?? "") else { return }
+        guard let url = URL(string: photoItems[imageCurrentIndex].sizes.last?.url ?? "") else { return }
         photoImageView.load(url: url)
     }
 
     private func setupUI() {
         let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(panGestureRecognizerAction))
         view.addGestureRecognizer(panRecognizer)
-        guard let url = URL(string: allImages[currentImageCounter].sizes.last?.url ?? "") else { return }
+        guard let url = URL(string: photoItems[imageCurrentIndex].sizes.last?.url ?? "") else { return }
         photoImageView.load(url: url)
     }
 }

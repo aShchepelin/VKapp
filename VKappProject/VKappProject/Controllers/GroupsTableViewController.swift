@@ -1,7 +1,6 @@
 // GroupsTableViewController.swift
 // Copyright © RoadMap. All rights reserved.
 
-import Alamofire
 import UIKit
 
 /// Экран групп
@@ -12,13 +11,15 @@ final class GroupsTableViewController: UITableViewController {
 
     // MARK: - Private Properties
 
-    private var myGroups: [GroupItem] = [] {
+    private var groupItems: [GroupItem] = [] {
         didSet {
             tableView.reloadData()
         }
     }
 
-    private lazy var searchResult: [GroupItem] = []
+    private var networkService: NetworkServiceProtocol = NetworkService()
+
+    private lazy var searchedGroupItems: [GroupItem] = []
 
     private var isSearchResultEmpty: Bool {
         guard let text = groupsSearchBar.text else { return false }
@@ -44,37 +45,25 @@ final class GroupsTableViewController: UITableViewController {
         fetchGroupRequest()
     }
 
-    private func reloadData() {
-        DispatchQueue.main.async { [self] in
-            self.tableView.reloadData()
-        }
-    }
-
     private func fetchGroupRequest() {
-        AF
-            .request(
-                "\(Constants.URLComponents.baseURL)\(RequestType.groups.urlString)\(Constants.URLComponents.version)"
-            )
-            .responseData { [weak self] response in
-                guard let data = response.value else { return }
-                do {
-                    let group = try JSONDecoder().decode(Group.self, from: data)
-                    self?.myGroups = group.response.groups
-                    self?.reloadData()
-                    print(group)
-                } catch {
-                    print(error)
-                }
+        networkService.fetchGroups { [weak self] group in
+            guard let self = self else { return }
+            switch group {
+            case let .success(data):
+                self.groupItems = data.response.groups
+            case let .failure(error):
+                print(error)
             }
+        }
     }
 
     // MARK: - UITableViewDelegate, UITableViewDataSource
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isFiltering {
-            return searchResult.count
+            return searchedGroupItems.count
         } else {
-            return myGroups.count
+            return groupItems.count
         }
     }
 
@@ -84,7 +73,7 @@ final class GroupsTableViewController: UITableViewController {
         forRowAt indexPath: IndexPath
     ) {
         if editingStyle == .delete {
-            myGroups.remove(at: indexPath.row)
+            groupItems.remove(at: indexPath.row)
             tableView.reloadData()
         }
     }
@@ -95,7 +84,7 @@ final class GroupsTableViewController: UITableViewController {
                 withIdentifier: Constants.Identifiers
                     .groupsCellIdentifier
             ) as? MyGroupsTableViewCell else { return UITableViewCell() }
-        let group = isFiltering ? searchResult[indexPath.row] : myGroups[indexPath.row]
+        let group = isFiltering ? searchedGroupItems[indexPath.row] : groupItems[indexPath.row]
         cell.configureCell(group)
         return cell
     }
@@ -105,7 +94,7 @@ final class GroupsTableViewController: UITableViewController {
 
 extension GroupsTableViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        searchResult = myGroups.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+        searchedGroupItems = groupItems.filter { $0.name.lowercased().contains(searchText.lowercased()) }
         isSearching = true
         tableView.reloadData()
     }

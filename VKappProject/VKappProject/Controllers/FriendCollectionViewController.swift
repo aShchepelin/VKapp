@@ -1,7 +1,6 @@
 // FriendCollectionViewController.swift
 // Copyright © RoadMap. All rights reserved.
 
-import Alamofire
 import UIKit
 
 /// Контроллер с фотографией друга
@@ -12,7 +11,9 @@ final class FriendCollectionViewController: UICollectionViewController {
 
     // MARK: - Private Properties
 
-    private var images: [PhotoItem] = [] {
+    private var networkService: NetworkServiceProtocol = NetworkService()
+
+    private var photoItems: [PhotoItem] = [] {
         didSet {
             collectionView.reloadData()
         }
@@ -31,8 +32,8 @@ final class FriendCollectionViewController: UICollectionViewController {
         if segue.identifier == Constants.Identifiers.segueFriendImagesIdentifier {
             guard let friendImages = segue.destination as? FriendImagesViewController else { return }
             if let indexPath = collectionView.indexPathsForSelectedItems?.first {
-                friendImages.allImages = images
-                friendImages.currentImageCounter = indexPath.row
+                friendImages.photoItems = photoItems
+                friendImages.imageCurrentIndex = indexPath.row
             }
         }
     }
@@ -44,26 +45,21 @@ final class FriendCollectionViewController: UICollectionViewController {
     }
 
     private func fetchFriendPhotosRequest(id: String) {
-        AF
-            .request(
-                "\(Constants.URLComponents.baseURL)" +
-                    "\(RequestType.photos(id: Int(id) ?? 0).urlString)\(Constants.URLComponents.version)"
-            )
-            .responseData { response in
-                guard let data = response.value else { return }
-                do {
-                    let photo = try JSONDecoder().decode(Photo.self, from: data)
-                    self.images = photo.response.photos
-                } catch {
-                    print(error)
-                }
+        networkService.fetchPhotos(for: id) { [weak self] friendPhoto in
+            guard let self = self else { return }
+            switch friendPhoto {
+            case let .success(data):
+                self.photoItems = data.response.photos
+            case let .failure(error):
+                print(error)
             }
+        }
     }
 
     // MARK: UICollectionViewDataSource, UICollectionViewDelegate
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        images.count
+        photoItems.count
     }
 
     override func collectionView(
@@ -74,7 +70,7 @@ final class FriendCollectionViewController: UICollectionViewController {
             withReuseIdentifier: Constants.Identifiers.friendCellIdentifier,
             for: indexPath
         ) as? FriendCollectionViewCell,
-            let photo = images[indexPath.row].sizes.last?.url else { return UICollectionViewCell() }
+            let photo = photoItems[indexPath.row].sizes.last?.url else { return UICollectionViewCell() }
         cell.configureCell(photo)
         return cell
     }

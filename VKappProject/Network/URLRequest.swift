@@ -5,7 +5,7 @@
 enum RequestType {
     case friends
     case groups
-    case photos(id: Int)
+    case photos(id: String)
     case searchGroups(searchQuery: String)
     var urlString: String {
         switch self {

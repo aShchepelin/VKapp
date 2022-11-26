@@ -7,13 +7,19 @@ import Alamofire
 final class VKAPIService {
     // MARK: - Public Method
 
-    func sendRequest(urlString: String) {
+    func sendRequest<T: Decodable>(urlString: String, complition: @escaping (Result<T, Error>) -> Void) {
         AF.request(
             "\(Constants.URLComponents.baseURL)\(urlString)" +
                 "\(Constants.URLComponents.version)"
         )
         .responseJSON { response in
-            guard let response = response.value else { return }
+            guard let response = response.data else { return }
+            do {
+                let object = try JSONDecoder().decode(T.self, from: response)
+                complition(.success(object))
+            } catch {
+                complition(.failure(error))
+            }
         }
     }
 

@@ -1,7 +1,6 @@
 // AuthorizationViewController.swift
 // Copyright © RoadMap. All rights reserved.
 
-import Alamofire
 import UIKit
 import WebKit
 
@@ -67,7 +66,7 @@ extension AuthorizationViewController: WKNavigationDelegate {
         guard let userId = params[Constants.WebViewURLComponents.paramUserId] else { return }
         Session.shared.userID = userId
         decisionHandler(.cancel)
-        let storyBoard = UIStoryboard(name: Constants.Identifiers.storyBoard, bundle: nil)
+        let storyBoard = UIStoryboard(name: Constants.Identifiers.mainStoryBoard, bundle: nil)
         let vc = storyBoard
             .instantiateViewController(
                 withIdentifier: Constants.Identifiers

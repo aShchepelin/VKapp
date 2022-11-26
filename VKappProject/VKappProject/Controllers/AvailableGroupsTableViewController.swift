@@ -1,7 +1,6 @@
 // AvailableGroupsTableViewController.swift
 // Copyright © RoadMap. All rights reserved.
 
-import Alamofire
 import UIKit
 
 /// Доступные группы
@@ -12,15 +11,17 @@ final class AvailableGroupsTableViewController: UITableViewController {
 
     // MARK: - Private Properties
 
-    private var searchResult: [GroupItem] = []
+    private var networkService: NetworkServiceProtocol = NetworkService()
 
-    private var searchResultIsEmpty: Bool {
+    private var searchGroupItems: [GroupItem] = []
+
+    private var isSearchResultEmpty: Bool {
         guard let text = groupsSearchBar.text else { return false }
         return text.isEmpty
     }
 
     private var isFiltering: Bool {
-        isSearching && !searchResultIsEmpty
+        isSearching && !isSearchResultEmpty
     }
 
     private var isSearching = false
@@ -28,26 +29,22 @@ final class AvailableGroupsTableViewController: UITableViewController {
     // MARK: - Private Methods
 
     private func fetchSearchedGroupsRequest(searchedText: String) {
-        AF
-            .request(
-                "\(Constants.URLComponents.baseURL)" +
-                    "\(RequestType.searchGroups(searchQuery: searchedText).urlString)\(Constants.URLComponents.version)"
-            )
-            .responseData { response in
-                guard let data = response.value else { return }
-                do {
-                    let group = try JSONDecoder().decode(Group.self, from: data)
-                    self.searchResult = group.response.groups
-                } catch {
-                    print(error)
-                }
+        networkService.fetchSearchGroups(for: searchedText) { [weak self] group in
+            guard let self = self else { return }
+            switch group {
+            case let .success(data):
+                self.searchGroupItems = data.response.groups
+                self.tableView.reloadData()
+            case let .failure(error):
+                print(error)
             }
+        }
     }
 
     // MARK: - UITableViewDataSource
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        searchResult.count
+        searchGroupItems.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -57,7 +54,7 @@ final class AvailableGroupsTableViewController: UITableViewController {
                     .availableGroupsCellIdentifier
             ) as? AvailableGroupTableViewCell
         else { return UITableViewCell() }
-        let group = searchResult[indexPath.row]
+        let group = searchGroupItems[indexPath.row]
         cell.configureCell(group)
         return cell
     }

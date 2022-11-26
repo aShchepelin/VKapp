@@ -54,7 +54,7 @@ enum Constants {
         static let friendCollectionViewControllerIdentifier = "friendCollectionVC"
         static let newsViewControllerIdentifier = "news"
         static let segueFriendImagesIdentifier = "friendImages"
-        static let storyBoard = "Main"
+        static let mainStoryBoard = "Main"
         static let friendsTableViewControllerIdentifier = "friendsTableViewController"
         static let groupsTableViewControllerIdentifier = "groupsTableViewController"
         static let loginViewControllerIdentifier = "loginViewController"
@@ -80,7 +80,7 @@ enum Constants {
         static let emptyString = ""
     }
 
-    enum Colors {
+    enum ColorNames {
         static let backgroundColorName = "BlueBackground"
         static let placeholderColorName = "placeholderTextColor"
     }

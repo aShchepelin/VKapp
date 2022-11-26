@@ -1,7 +1,6 @@
 // FriendListTableViewController.swift
 // Copyright © RoadMap. All rights reserved.
 
-import Alamofire
 import UIKit
 
 /// Список друзей
@@ -15,10 +14,11 @@ final class FriendListTableViewController: UITableViewController {
 
     // MARK: - Private Properties
 
-    private var users: [UserItem] = []
+    private var usersItem: [UserItem] = []
     private var sectionsMap: [Character: [UserItem]] = [:]
     private var sectionTitles: [Character] = []
-    private let service = VKAPIService()
+//    private let vkAPIService = VKAPIService()
+    private var networkService: NetworkServiceProtocol = NetworkService()
 
     // MARK: - LifeCycle
 
@@ -44,9 +44,9 @@ final class FriendListTableViewController: UITableViewController {
     }
 
     private func setupFriends() {
-        DispatchQueue.main.async { [self] in
+        DispatchQueue.main.async {
             self.groupingUser()
-            self.sectionTitles = Array(sectionsMap.keys).sorted()
+            self.sectionTitles = Array(self.sectionsMap.keys).sorted()
             self.tableView.reloadData()
         }
     }
@@ -59,25 +59,20 @@ final class FriendListTableViewController: UITableViewController {
     }
 
     private func fetchFriendRequest() {
-        AF
-            .request(
-                "\(Constants.URLComponents.baseURL)\(RequestType.friends.urlString)\(Constants.URLComponents.version)"
-            )
-            .responseData { [weak self] response in
-                guard let data = response.value else { return }
-                do {
-                    let user = try JSONDecoder().decode(User.self, from: data)
-                    self?.users = user.response.friends
-                    self?.setupFriends()
-                    print(user)
-                } catch {
-                    print(error)
-                }
+        networkService.fetchFriends { [weak self] friend in
+            guard let self = self else { return }
+            switch friend {
+            case let .success(data):
+                self.usersItem = data.response.friends
+                self.setupFriends()
+            case let .failure(error):
+                print(error)
             }
+        }
     }
 
     private func groupingUser() {
-        for userName in users {
+        for userName in usersItem {
             guard let firstLetter = userName.lastName.first else { return }
             if sectionsMap[firstLetter] != nil {
                 sectionsMap[firstLetter]?.append(userName)
@@ -128,7 +123,7 @@ final class FriendListTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         (view as? UITableViewHeaderFooterView)?.contentView
-            .backgroundColor = UIColor(named: Constants.Colors.placeholderColorName)?.withAlphaComponent(0.3)
+            .backgroundColor = UIColor(named: Constants.ColorNames.placeholderColorName)?.withAlphaComponent(0.3)
         (view as? UITableViewHeaderFooterView)?.textLabel?.textColor = UIColor.white
     }
 }
