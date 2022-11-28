@@ -2,18 +2,25 @@
 // Copyright © RoadMap. All rights reserved.
 
 import Alamofire
-import Foundation
 
 /// VK API Service
 final class VKAPIService {
     // MARK: - Public Method
 
-    func sendRequest(urlString: String) {
-        AF.request("\(Constants.URLComponents.baseURL)\(urlString)\(Constants.URLComponents.version)")
-            .responseJSON { response in
-                guard let response = response.value else { return }
-                print(response)
+    func sendRequest<T: Decodable>(urlString: String, complition: @escaping (Result<T, Error>) -> Void) {
+        AF.request(
+            "\(Constants.URLComponents.baseURL)\(urlString)" +
+                "\(Constants.URLComponents.version)"
+        )
+        .responseJSON { response in
+            guard let response = response.data else { return }
+            do {
+                let object = try JSONDecoder().decode(T.self, from: response)
+                complition(.success(object))
+            } catch {
+                complition(.failure(error))
             }
+        }
     }
 
     func webViewURLComponents() -> URLRequest? {

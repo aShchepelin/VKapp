@@ -3,7 +3,7 @@
 
 import UIKit
 
-/// Экран списка друзей
+/// Список друзей
 final class FriendListTableViewController: UITableViewController {
     // MARK: - Private Enum
 
@@ -14,66 +14,78 @@ final class FriendListTableViewController: UITableViewController {
 
     // MARK: - Private Properties
 
-    private let users: [User] = [
-        User(
-            avatarImageName: Constants.UserImageNames.bryleeCollinsImageName,
-            name: Constants.UserNames.bryleeCollinsName
-        ),
-        User(avatarImageName: Constants.UserImageNames.emilieRivasImageName, name: Constants.UserNames.emilieRivasName),
-        User(avatarImageName: Constants.UserImageNames.connorLloydImageName, name: Constants.UserNames.connorLloydName),
-        User(avatarImageName: Constants.UserImageNames.ireneNormanImageName, name: Constants.UserNames.ireneNormanName),
-        User(
-            avatarImageName: Constants.UserImageNames.kamronThomasImageName,
-            name: Constants.UserNames.kamronThomasName
-        ),
-        User(
-            avatarImageName: Constants.UserImageNames.kaylynnGrossImageName,
-            name: Constants.UserNames.kaylynnGrossName
-        ),
-        User(avatarImageName: Constants.UserImageNames.kyleRosalesImageName, name: Constants.UserNames.kyleRosalesName),
-        User(avatarImageName: Constants.UserImageNames.martinSteinImageName, name: Constants.UserNames.martinSteinName)
-    ]
-
-    private var sections: [Character: [User]] = [:]
+    private var usersItem: [UserItem] = []
+    private var sectionsMap: [Character: [UserItem]] = [:]
     private var sectionTitles: [Character] = []
+//    private let vkAPIService = VKAPIService()
+    private var networkService: NetworkServiceProtocol = NetworkService()
 
     // MARK: - LifeCycle
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        groupingUser()
+        setupUI()
     }
 
     // MARK: - Public Method
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard segue.identifier == Constants.Identifiers.friendCollectionViewControllerIdentifier,
-              let friendCollectionViewController = segue.destination as? FriendCollectionViewController else { return }
-        guard let indexPath = tableView.indexPathForSelectedRow else { return }
-        let keys = sections.keys.sorted()
-        let key = keys[indexPath.section]
-        guard let friendAvatar = sections[key]?[indexPath.row] else { return }
-        friendCollectionViewController.friendAvatarName = friendAvatar.avatarImageName
+              let friendCollectionViewController = segue.destination as? FriendCollectionViewController,
+              let indexPath = tableView.indexPathForSelectedRow,
+              let id = getOneUser(indexPath: indexPath)?.id else { return }
+        friendCollectionViewController.id = String(id)
     }
 
     // MARK: - Private Method
 
-    private func groupingUser() {
-        for userName in users {
-            guard let firstLetter = userName.name.first else { return }
-            if sections[firstLetter] != nil {
-                sections[firstLetter]?.append(userName)
-            } else {
-                sections[firstLetter] = [userName]
+    private func setupUI() {
+        fetchFriendRequest()
+    }
+
+    private func setupFriends() {
+        DispatchQueue.main.async {
+            self.groupingUser()
+            self.sectionTitles = Array(self.sectionsMap.keys).sorted()
+            self.tableView.reloadData()
+        }
+    }
+
+    private func getOneUser(indexPath: IndexPath) -> UserItem? {
+        let firstChar = sectionsMap.keys.sorted()[indexPath.section]
+        guard let users = sectionsMap[firstChar] else { return nil }
+        let user = users[indexPath.row]
+        return user
+    }
+
+    private func fetchFriendRequest() {
+        networkService.fetchFriends { [weak self] friend in
+            guard let self = self else { return }
+            switch friend {
+            case let .success(data):
+                self.usersItem = data.response.friends
+                self.setupFriends()
+            case let .failure(error):
+                print(error)
             }
         }
-        sectionTitles = Array(sections.keys).sorted()
+    }
+
+    private func groupingUser() {
+        for userName in usersItem {
+            guard let firstLetter = userName.lastName.first else { return }
+            if sectionsMap[firstLetter] != nil {
+                sectionsMap[firstLetter]?.append(userName)
+            } else {
+                sectionsMap[firstLetter] = [userName]
+            }
+        }
     }
 
     // MARK: - UITableViewDelegate, UITableViewDataSource
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let sections = sections[sectionTitles[section]]?.count else { return 0 }
+        guard let sections = sectionsMap[sectionTitles[section]]?.count else { return 0 }
         return sections
     }
 
@@ -83,14 +95,14 @@ final class FriendListTableViewController: UITableViewController {
                 withIdentifier: Constants.Identifiers
                     .friendListCellIdentifier
             ) as? FriendListTableViewCell,
-            let groupedUser = sections[sectionTitles[indexPath.section]]?[indexPath.row]
+            let groupedUser = sectionsMap[sectionTitles[indexPath.section]]?[indexPath.row]
         else { return UITableViewCell() }
         cell.configureCell(groupedUser)
         return cell
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        sections.count
+        sectionsMap.count
     }
 
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
@@ -111,7 +123,7 @@ final class FriendListTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         (view as? UITableViewHeaderFooterView)?.contentView
-            .backgroundColor = UIColor(named: Constants.Colors.placeholderColorName)?.withAlphaComponent(0.3)
+            .backgroundColor = UIColor(named: Constants.ColorNames.placeholderColorName)?.withAlphaComponent(0.3)
         (view as? UITableViewHeaderFooterView)?.textLabel?.textColor = UIColor.white
     }
 }

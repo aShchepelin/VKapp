@@ -11,13 +11,15 @@ final class GroupsTableViewController: UITableViewController {
 
     // MARK: - Private Properties
 
-    private var myGroups: [Group] = [] {
+    private var groupItems: [GroupItem] = [] {
         didSet {
             tableView.reloadData()
         }
     }
 
-    private lazy var searchResult: [Group] = []
+    private var networkService: NetworkServiceProtocol = NetworkService()
+
+    private lazy var searchedGroupItems: [GroupItem] = []
 
     private var isSearchResultEmpty: Bool {
         guard let text = groupsSearchBar.text else { return false }
@@ -30,13 +32,28 @@ final class GroupsTableViewController: UITableViewController {
 
     private var isSearching = false
 
-    // MARK: - Public Methods
+    // MARK: - LifeCycle
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard segue.identifier == Constants.Identifiers.addGroupIdentifier,
-              let availableTableVC = segue.destination as? AvailableGroupsTableViewController else { return }
-        availableTableVC.addGroup(myGroups) { [weak self] group in
-            self?.myGroups.append(group)
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        setupUI()
+    }
+
+    // MARK: - Private Methods
+
+    private func setupUI() {
+        fetchGroupRequest()
+    }
+
+    private func fetchGroupRequest() {
+        networkService.fetchGroups { [weak self] group in
+            guard let self = self else { return }
+            switch group {
+            case let .success(data):
+                self.groupItems = data.response.groups
+            case let .failure(error):
+                print(error)
+            }
         }
     }
 
@@ -44,9 +61,9 @@ final class GroupsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isFiltering {
-            return searchResult.count
+            return searchedGroupItems.count
         } else {
-            return myGroups.count
+            return groupItems.count
         }
     }
 
@@ -56,7 +73,7 @@ final class GroupsTableViewController: UITableViewController {
         forRowAt indexPath: IndexPath
     ) {
         if editingStyle == .delete {
-            myGroups.remove(at: indexPath.row)
+            groupItems.remove(at: indexPath.row)
             tableView.reloadData()
         }
     }
@@ -67,7 +84,7 @@ final class GroupsTableViewController: UITableViewController {
                 withIdentifier: Constants.Identifiers
                     .groupsCellIdentifier
             ) as? MyGroupsTableViewCell else { return UITableViewCell() }
-        let group = isFiltering ? searchResult[indexPath.row] : myGroups[indexPath.row]
+        let group = isFiltering ? searchedGroupItems[indexPath.row] : groupItems[indexPath.row]
         cell.configureCell(group)
         return cell
     }
@@ -77,7 +94,7 @@ final class GroupsTableViewController: UITableViewController {
 
 extension GroupsTableViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        searchResult = myGroups.filter { $0.groupName.lowercased().contains(searchText.lowercased()) }
+        searchedGroupItems = groupItems.filter { $0.name.lowercased().contains(searchText.lowercased()) }
         isSearching = true
         tableView.reloadData()
     }

@@ -7,4 +7,5 @@ target 'VKappProject' do
 
   # Pods for VKappProject
   pod 'Alamofire'
+  pod 'RealmSwift'
 end

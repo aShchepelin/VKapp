@@ -5,26 +5,53 @@ import UIKit
 
 /// Контроллер с фотографией друга
 final class FriendCollectionViewController: UICollectionViewController {
-    // MARK: - Public Property
+    // MARK: - Public Properties
 
-    var friendAvatarName = ""
+    var id = Constants.Items.emptyString
 
-    // MARK: - Private Properies
+    // MARK: - Private Properties
 
-    private let images = [
-        UIImage(named: Constants.UserImageNames.ireneNormanImageName),
-        UIImage(named: Constants.UserImageNames.emilieRivasImageName),
-        UIImage(named: Constants.UserImageNames.connorLloydImageName)
-    ]
+    private var networkService: NetworkServiceProtocol = NetworkService()
 
-    // MARK: - Public Methods
+    private var photoItems: [PhotoItem] = [] {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
+
+    // MARK: - LifeCycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupUI()
+    }
+
+    // MARK: - Public Method
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Constants.Identifiers.segueFriendImagesIdentifier {
             guard let friendImages = segue.destination as? FriendImagesViewController else { return }
             if let indexPath = collectionView.indexPathsForSelectedItems?.first {
-                friendImages.allImages = images
-                friendImages.currentImageCounter = indexPath.row
+                friendImages.photoItems = photoItems
+                friendImages.imageCurrentIndex = indexPath.row
+            }
+        }
+    }
+
+    // MARK: - Private Methods
+
+    private func setupUI() {
+        fetchFriendPhotosRequest(id: id)
+    }
+
+    private func fetchFriendPhotosRequest(id: String) {
+        networkService.fetchPhotos(for: id) { [weak self] friendPhoto in
+            guard let self = self else { return }
+            switch friendPhoto {
+            case let .success(data):
+                self.photoItems = data.response.photos
+            case let .failure(error):
+                print(error)
             }
         }
     }
@@ -32,7 +59,7 @@ final class FriendCollectionViewController: UICollectionViewController {
     // MARK: UICollectionViewDataSource, UICollectionViewDelegate
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        1
+        photoItems.count
     }
 
     override func collectionView(
@@ -42,8 +69,9 @@ final class FriendCollectionViewController: UICollectionViewController {
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: Constants.Identifiers.friendCellIdentifier,
             for: indexPath
-        ) as? FriendCollectionViewCell else { return UICollectionViewCell() }
-        cell.configureCell(friendAvatarName)
+        ) as? FriendCollectionViewCell,
+            let photo = photoItems[indexPath.row].sizes.last?.url else { return UICollectionViewCell() }
+        cell.configureCell(photo)
         return cell
     }
 }

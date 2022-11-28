@@ -25,14 +25,6 @@ final class NewsViewController: UIViewController {
     private func setupUI() {
         newsTableView.delegate = self
         newsTableView.dataSource = self
-        sendRequest()
-    }
-
-    private func sendRequest() {
-        vkAPIService.sendRequest(urlString: RequestType.friends.urlString)
-        vkAPIService.sendRequest(urlString: RequestType.photos.urlString)
-        vkAPIService.sendRequest(urlString: RequestType.groups.urlString)
-        vkAPIService.sendRequest(urlString: RequestType.searchGroups.urlString)
     }
 }
 

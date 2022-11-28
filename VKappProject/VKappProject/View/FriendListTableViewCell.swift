@@ -20,9 +20,10 @@ final class FriendListTableViewCell: UITableViewCell {
 
     // MARK: - Public Method
 
-    func configureCell(_ model: User) {
-        userNameLabel.text = model.name
-        userAvatarImageView.image = UIImage(named: model.avatarImageName)
+    func configureCell(_ model: UserItem) {
+        userNameLabel.text = "\(model.firstName) \(model.lastName)"
+        guard let url = URL(string: model.photo) else { return }
+        userAvatarImageView.load(url: url)
     }
 
     // MARK: - Private Method
