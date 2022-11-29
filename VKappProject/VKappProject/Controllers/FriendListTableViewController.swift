@@ -1,6 +1,7 @@
 // FriendListTableViewController.swift
 // Copyright © RoadMap. All rights reserved.
 
+import RealmSwift
 import UIKit
 
 /// Список друзей
@@ -14,11 +15,12 @@ final class FriendListTableViewController: UITableViewController {
 
     // MARK: - Private Properties
 
-    private var usersItem: [UserItem] = []
+    private let networkService: NetworkServiceProtocol = NetworkService()
+    private let realmService = RealmService()
+    private var usersItem: Results<UserItem>?
     private var sectionsMap: [Character: [UserItem]] = [:]
     private var sectionTitles: [Character] = []
-//    private let vkAPIService = VKAPIService()
-    private var networkService: NetworkServiceProtocol = NetworkService()
+    private var notificationToken: NotificationToken?
 
     // MARK: - LifeCycle
 
@@ -40,7 +42,20 @@ final class FriendListTableViewController: UITableViewController {
     // MARK: - Private Method
 
     private func setupUI() {
-        fetchFriendRequest()
+        loadFriendsToRealm()
+    }
+
+    private func loadFriendsToRealm() {
+        do {
+            let realm = try Realm()
+            let friends = realm.objects(UserItem.self)
+            addNotificationToken(result: friends)
+            usersItem = friends
+            setupFriends()
+            fetchFriendRequest()
+        } catch {
+            print(error)
+        }
     }
 
     private func setupFriends() {
@@ -63,16 +78,30 @@ final class FriendListTableViewController: UITableViewController {
             guard let self = self else { return }
             switch friend {
             case let .success(data):
-                self.usersItem = data.response.friends
-                self.setupFriends()
+                self.realmService.saveDataToRealm(data.response.friends)
             case let .failure(error):
                 print(error)
             }
         }
     }
 
+    private func addNotificationToken(result: Results<UserItem>) {
+        notificationToken = result.observe { change in
+            switch change {
+            case .initial:
+                break
+            case .update:
+                self.usersItem = result
+                self.setupFriends()
+            case let .error(error):
+                print(error)
+            }
+        }
+    }
+
     private func groupingUser() {
-        for userName in usersItem {
+        guard let users = usersItem else { return }
+        for userName in Array(users) {
             guard let firstLetter = userName.lastName.first else { return }
             if sectionsMap[firstLetter] != nil {
                 sectionsMap[firstLetter]?.append(userName)

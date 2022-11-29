@@ -5,5 +5,5 @@ import RealmSwift
 
 /// Параметры фото
 final class Size: Object, Codable {
-    @objc dynamic var url: String
+    @Persisted var url: String
 }

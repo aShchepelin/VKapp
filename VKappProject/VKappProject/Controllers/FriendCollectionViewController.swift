@@ -1,6 +1,7 @@
 // FriendCollectionViewController.swift
 // Copyright © RoadMap. All rights reserved.
 
+import RealmSwift
 import UIKit
 
 /// Контроллер с фотографией друга
@@ -12,6 +13,7 @@ final class FriendCollectionViewController: UICollectionViewController {
     // MARK: - Private Properties
 
     private var networkService: NetworkServiceProtocol = NetworkService()
+    private let realmService = RealmService()
 
     private var photoItems: [PhotoItem] = [] {
         didSet {
@@ -41,7 +43,27 @@ final class FriendCollectionViewController: UICollectionViewController {
     // MARK: - Private Methods
 
     private func setupUI() {
-        fetchFriendPhotosRequest(id: id)
+        loadPhotosToRealm()
+    }
+
+    private func loadPhotosToRealm() {
+        do {
+            let realm = try Realm()
+            let photos = Array(realm.objects(PhotoItem.self))
+            let userID = photos.map(\.ownerID)
+            if userID.contains(where: { idUserFromRealm in
+                idUserFromRealm == Int(id)
+            }) {
+                photoItems = photos.filter {
+                    $0.ownerID == Int(id)
+                }
+                collectionView.reloadData()
+            } else {
+                fetchFriendPhotosRequest(id: id)
+            }
+        } catch {
+            print(error)
+        }
     }
 
     private func fetchFriendPhotosRequest(id: String) {
@@ -50,6 +72,7 @@ final class FriendCollectionViewController: UICollectionViewController {
             switch friendPhoto {
             case let .success(data):
                 self.photoItems = data.response.photos
+                self.realmService.saveDataToRealm(self.photoItems)
             case let .failure(error):
                 print(error)
             }

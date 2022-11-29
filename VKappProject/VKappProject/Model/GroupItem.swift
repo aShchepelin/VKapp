@@ -5,9 +5,9 @@ import RealmSwift
 
 /// Информация о группах
 final class GroupItem: Object, Codable {
-    @objc dynamic var id: Int
-    @objc dynamic var name: String
-    @objc dynamic var photo: String
+    @Persisted(primaryKey: true) var id: Int
+    @Persisted var name: String
+    @Persisted var photo: String
     enum CodingKeys: String, CodingKey {
         case id
         case name
