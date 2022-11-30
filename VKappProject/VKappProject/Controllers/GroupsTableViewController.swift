@@ -60,7 +60,7 @@ final class GroupsTableViewController: UITableViewController {
             guard let self = self else { return }
             switch group {
             case let .success(data):
-                self.realmService.saveDataToRealm(data.response.groups)
+                self.realmService.saveData(data.response.groups)
             case let .failure(error):
                 print(error)
             }
@@ -68,12 +68,12 @@ final class GroupsTableViewController: UITableViewController {
     }
 
     private func addNotificationToken(result: Results<GroupItem>) {
-        notificationToken = result.observe { change in
+        notificationToken = result.observe { [weak self] change in
             switch change {
             case .initial:
                 break
             case .update:
-                self.groupItems = result
+                self?.groupItems = result
             case let .error(error):
                 print(error)
             }

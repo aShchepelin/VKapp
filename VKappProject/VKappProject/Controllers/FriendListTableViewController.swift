@@ -78,7 +78,7 @@ final class FriendListTableViewController: UITableViewController {
             guard let self = self else { return }
             switch friend {
             case let .success(data):
-                self.realmService.saveDataToRealm(data.response.friends)
+                self.realmService.saveData(data.response.friends)
             case let .failure(error):
                 print(error)
             }
@@ -86,13 +86,13 @@ final class FriendListTableViewController: UITableViewController {
     }
 
     private func addNotificationToken(result: Results<UserItem>) {
-        notificationToken = result.observe { change in
+        notificationToken = result.observe { [weak self] change in
             switch change {
             case .initial:
                 break
             case .update:
-                self.usersItem = result
-                self.setupFriends()
+                self?.usersItem = result
+                self?.setupFriends()
             case let .error(error):
                 print(error)
             }

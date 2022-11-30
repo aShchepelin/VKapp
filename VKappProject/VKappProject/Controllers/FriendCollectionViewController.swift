@@ -72,7 +72,7 @@ final class FriendCollectionViewController: UICollectionViewController {
             switch friendPhoto {
             case let .success(data):
                 self.photoItems = data.response.photos
-                self.realmService.saveDataToRealm(self.photoItems)
+                self.realmService.saveData(self.photoItems)
             case let .failure(error):
                 print(error)
             }

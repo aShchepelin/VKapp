@@ -4,8 +4,10 @@
 import RealmSwift
 
 /// Сервис для сохранения данных в кэш
-class RealmService {
-    func saveDataToRealm<T: Object>(_ info: [T]) {
+final class RealmService {
+    // MARK: - Public Methods
+
+    func saveData<T: Object>(_ info: [T]) {
         do {
             let configuration = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
             let realm = try Realm(configuration: configuration)
