@@ -46,16 +46,11 @@ final class FriendListTableViewController: UITableViewController {
     }
 
     private func loadFriendsToRealm() {
-        do {
-            let realm = try Realm()
-            let friends = realm.objects(UserItem.self)
+            guard let friends = realmService.getData(UserItem.self) else { return }
             addNotificationToken(result: friends)
             usersItem = friends
             setupFriends()
             fetchFriendRequest()
-        } catch {
-            print(error)
-        }
     }
 
     private func setupFriends() {
@@ -80,7 +75,7 @@ final class FriendListTableViewController: UITableViewController {
             case let .success(data):
                 self.realmService.saveData(data.response.friends)
             case let .failure(error):
-                print(error)
+                print(error.localizedDescription)
             }
         }
     }
@@ -94,7 +89,7 @@ final class FriendListTableViewController: UITableViewController {
                 self?.usersItem = result
                 self?.setupFriends()
             case let .error(error):
-                print(error)
+                print(error.localizedDescription)
             }
         }
     }

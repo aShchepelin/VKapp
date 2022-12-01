@@ -41,17 +41,12 @@ final class GroupsTableViewController: UITableViewController {
     }
 
     private func loadGroupToRealm() {
-        do {
-            let realm = try Realm()
-            let groups = realm.objects(GroupItem.self)
-            addNotificationToken(result: groups)
-            if !groups.isEmpty {
-                groupItems = groups
-            } else {
-                fetchGroupRequest()
-            }
-        } catch {
-            print(error)
+        guard let groups = realmService.getData(GroupItem.self) else { return }
+        addNotificationToken(result: groups)
+        if !groups.isEmpty {
+            groupItems = groups
+        } else {
+            fetchGroupRequest()
         }
     }
 
@@ -62,7 +57,7 @@ final class GroupsTableViewController: UITableViewController {
             case let .success(data):
                 self.realmService.saveData(data.response.groups)
             case let .failure(error):
-                print(error)
+                print(error.localizedDescription)
             }
         }
     }
@@ -75,7 +70,7 @@ final class GroupsTableViewController: UITableViewController {
             case .update:
                 self?.groupItems = result
             case let .error(error):
-                print(error)
+                print(error.localizedDescription)
             }
         }
     }

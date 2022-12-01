@@ -5,17 +5,33 @@ import RealmSwift
 
 /// Сервис для сохранения данных в кэш
 final class RealmService {
+    // MARK: - Private Property
+
+    private let configuration = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
+
     // MARK: - Public Methods
 
     func saveData<T: Object>(_ info: [T]) {
         do {
-            let configuration = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
             let realm = try Realm(configuration: configuration)
             try realm.write {
                 realm.add(info, update: .modified)
             }
         } catch {
-            print(error)
+            print(error.localizedDescription)
         }
+    }
+
+    func getData<T: Object>(
+        _ type: T.Type,
+        config: Realm.Configuration = Realm.Configuration.defaultConfiguration
+    ) -> Results<T>? {
+        do {
+            let realm = try Realm(configuration: configuration)
+            return realm.objects(type)
+        } catch {
+            print(error.localizedDescription)
+        }
+        return nil
     }
 }

@@ -62,7 +62,7 @@ final class FriendCollectionViewController: UICollectionViewController {
                 fetchFriendPhotosRequest(id: id)
             }
         } catch {
-            print(error)
+            print(error.localizedDescription)
         }
     }
 
@@ -74,7 +74,7 @@ final class FriendCollectionViewController: UICollectionViewController {
                 self.photoItems = data.response.photos
                 self.realmService.saveData(self.photoItems)
             case let .failure(error):
-                print(error)
+                print(error.localizedDescription)
             }
         }
     }
