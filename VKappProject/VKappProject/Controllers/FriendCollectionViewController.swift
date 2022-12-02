@@ -1,7 +1,6 @@
 // FriendCollectionViewController.swift
 // Copyright © RoadMap. All rights reserved.
 
-import RealmSwift
 import UIKit
 
 /// Контроллер с фотографией друга
@@ -12,7 +11,7 @@ final class FriendCollectionViewController: UICollectionViewController {
 
     // MARK: - Private Properties
 
-    private var networkService: NetworkServiceProtocol = NetworkService()
+    private let networkService = NetworkService()
     private let realmService = RealmService()
 
     private var photoItems: [PhotoItem] = [] {
@@ -43,30 +42,25 @@ final class FriendCollectionViewController: UICollectionViewController {
     // MARK: - Private Methods
 
     private func setupUI() {
-        loadPhotosToRealm()
+        loadPhotos()
     }
 
-    private func loadPhotosToRealm() {
-        do {
-            let realm = try Realm()
-            let photos = Array(realm.objects(PhotoItem.self))
-            let userID = photos.map(\.ownerID)
-            if userID.contains(where: { idUserFromRealm in
-                idUserFromRealm == Int(id)
-            }) {
-                photoItems = photos.filter {
-                    $0.ownerID == Int(id)
-                }
-                collectionView.reloadData()
-            } else {
-                fetchFriendPhotosRequest(id: id)
+    private func loadPhotos() {
+        guard let photos = realmService.getData(PhotoItem.self) else { return }
+        let userID = photos.map(\.ownerID)
+        if userID.contains(where: { idUserFromRealm in
+            idUserFromRealm == Int(id)
+        }) {
+            photoItems = photos.filter {
+                $0.ownerID == Int(id)
             }
-        } catch {
-            print(error.localizedDescription)
+            collectionView.reloadData()
+        } else {
+            fetchFriendPhotos(id: id)
         }
     }
 
-    private func fetchFriendPhotosRequest(id: String) {
+    private func fetchFriendPhotos(id: String) {
         networkService.fetchPhotos(for: id) { [weak self] friendPhoto in
             guard let self = self else { return }
             switch friendPhoto {

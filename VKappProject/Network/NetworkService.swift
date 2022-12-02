@@ -2,7 +2,6 @@
 // Copyright © RoadMap. All rights reserved.
 
 import Alamofire
-import RealmSwift
 
 /// Сервис по работе с API
 final class NetworkService: NetworkServiceProtocol {

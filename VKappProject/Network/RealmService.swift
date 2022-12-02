@@ -3,7 +3,7 @@
 
 import RealmSwift
 
-/// Сервис для сохранения данных в кэш
+/// Сервис для работы с Realm
 final class RealmService {
     // MARK: - Private Property
 

@@ -18,7 +18,7 @@ final class GroupsTableViewController: UITableViewController {
         }
     }
 
-    private let networkService: NetworkServiceProtocol = NetworkService()
+    private let networkService = NetworkService()
     private let realmService = RealmService()
     private var notificationToken: NotificationToken?
     private var searchedGroupItems: Results<GroupItem>?
@@ -37,20 +37,20 @@ final class GroupsTableViewController: UITableViewController {
     // MARK: - Private Methods
 
     private func setupUI() {
-        loadGroupToRealm()
+        loadGroups()
     }
 
-    private func loadGroupToRealm() {
+    private func loadGroups() {
         guard let groups = realmService.getData(GroupItem.self) else { return }
         addNotificationToken(result: groups)
         if !groups.isEmpty {
             groupItems = groups
         } else {
-            fetchGroupRequest()
+            fetchGroups()
         }
     }
 
-    private func fetchGroupRequest() {
+    private func fetchGroups() {
         networkService.fetchGroups { [weak self] group in
             guard let self = self else { return }
             switch group {

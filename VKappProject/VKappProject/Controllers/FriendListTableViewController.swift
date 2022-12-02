@@ -15,7 +15,7 @@ final class FriendListTableViewController: UITableViewController {
 
     // MARK: - Private Properties
 
-    private let networkService: NetworkServiceProtocol = NetworkService()
+    private let networkService = NetworkService()
     private let realmService = RealmService()
     private var usersItem: Results<UserItem>?
     private var sectionsMap: [Character: [UserItem]] = [:]
@@ -42,15 +42,15 @@ final class FriendListTableViewController: UITableViewController {
     // MARK: - Private Method
 
     private func setupUI() {
-        loadFriendsToRealm()
+        loadFriends()
     }
 
-    private func loadFriendsToRealm() {
-            guard let friends = realmService.getData(UserItem.self) else { return }
-            addNotificationToken(result: friends)
-            usersItem = friends
-            setupFriends()
-            fetchFriendRequest()
+    private func loadFriends() {
+        guard let friends = realmService.getData(UserItem.self) else { return }
+        addNotificationToken(result: friends)
+        usersItem = friends
+        setupFriends()
+        fetchFriendRequest()
     }
 
     private func setupFriends() {
