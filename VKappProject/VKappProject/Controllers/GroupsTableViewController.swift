@@ -1,6 +1,7 @@
 // GroupsTableViewController.swift
 // Copyright © RoadMap. All rights reserved.
 
+import RealmSwift
 import UIKit
 
 /// Экран групп
@@ -11,26 +12,20 @@ final class GroupsTableViewController: UITableViewController {
 
     // MARK: - Private Properties
 
-    private var groupItems: [GroupItem] = [] {
+    private var groupItems: Results<GroupItem>? {
         didSet {
             tableView.reloadData()
         }
     }
 
-    private var networkService: NetworkServiceProtocol = NetworkService()
-
-    private lazy var searchedGroupItems: [GroupItem] = []
-
+    private let networkService = NetworkService()
+    private let realmService = RealmService()
+    private var notificationToken: NotificationToken?
+    private var searchedGroupItems: Results<GroupItem>?
     private var isSearchResultEmpty: Bool {
         guard let text = groupsSearchBar.text else { return false }
         return text.isEmpty
     }
-
-    private var isFiltering: Bool {
-        isSearching && !isSearchResultEmpty
-    }
-
-    private var isSearching = false
 
     // MARK: - LifeCycle
 
@@ -42,17 +37,40 @@ final class GroupsTableViewController: UITableViewController {
     // MARK: - Private Methods
 
     private func setupUI() {
-        fetchGroupRequest()
+        loadGroups()
     }
 
-    private func fetchGroupRequest() {
+    private func loadGroups() {
+        guard let groups = realmService.getData(GroupItem.self) else { return }
+        addNotificationToken(result: groups)
+        if !groups.isEmpty {
+            groupItems = groups
+        } else {
+            fetchGroups()
+        }
+    }
+
+    private func fetchGroups() {
         networkService.fetchGroups { [weak self] group in
             guard let self = self else { return }
             switch group {
             case let .success(data):
-                self.groupItems = data.response.groups
+                self.realmService.saveData(data.response.groups)
             case let .failure(error):
-                print(error)
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    private func addNotificationToken(result: Results<GroupItem>) {
+        notificationToken = result.observe { [weak self] change in
+            switch change {
+            case .initial:
+                break
+            case .update:
+                self?.groupItems = result
+            case let .error(error):
+                print(error.localizedDescription)
             }
         }
     }
@@ -60,22 +78,7 @@ final class GroupsTableViewController: UITableViewController {
     // MARK: - UITableViewDelegate, UITableViewDataSource
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if isFiltering {
-            return searchedGroupItems.count
-        } else {
-            return groupItems.count
-        }
-    }
-
-    override func tableView(
-        _ tableView: UITableView,
-        commit editingStyle: UITableViewCell.EditingStyle,
-        forRowAt indexPath: IndexPath
-    ) {
-        if editingStyle == .delete {
-            groupItems.remove(at: indexPath.row)
-            tableView.reloadData()
-        }
+        groupItems?.count ?? 0
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -83,25 +86,10 @@ final class GroupsTableViewController: UITableViewController {
             .dequeueReusableCell(
                 withIdentifier: Constants.Identifiers
                     .groupsCellIdentifier
-            ) as? MyGroupsTableViewCell else { return UITableViewCell() }
-        let group = isFiltering ? searchedGroupItems[indexPath.row] : groupItems[indexPath.row]
+            ) as? MyGroupsTableViewCell,
+            let groupItems = groupItems?[indexPath.row] else { return UITableViewCell() }
+        let group = groupItems
         cell.configureCell(group)
         return cell
-    }
-}
-
-// MARK: - UISearchBarDelegate
-
-extension GroupsTableViewController: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        searchedGroupItems = groupItems.filter { $0.name.lowercased().contains(searchText.lowercased()) }
-        isSearching = true
-        tableView.reloadData()
-    }
-
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        isSearching = false
-        searchBar.text = ""
-        tableView.reloadData()
     }
 }

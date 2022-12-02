@@ -3,7 +3,7 @@
 
 import Alamofire
 
-/// VK API Service
+/// Сервис по работе с запросами
 final class VKAPIService {
     // MARK: - Public Method
 

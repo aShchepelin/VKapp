@@ -3,6 +3,7 @@
 
 import Alamofire
 
+/// Сервис по работе с API
 final class NetworkService: NetworkServiceProtocol {
     // MARK: - Private Properties
 

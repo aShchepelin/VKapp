@@ -116,7 +116,7 @@ enum Constants {
         static let host = "oauth.vk.com"
         static let path = "/authorize"
         static let clientIdName = "client_id"
-        static let clientIdValue = "51484017"
+        static let clientIdValue = "51490559"
         static let displayName = "display"
         static let displayValue = "mobile"
         static let redirectUriName = "redirect_uri"

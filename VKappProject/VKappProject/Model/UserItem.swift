@@ -5,10 +5,14 @@ import RealmSwift
 
 /// Информация о друзьях
 final class UserItem: Object, Codable {
-    @objc dynamic var id: Int
-    @objc dynamic var firstName: String
-    @objc dynamic var lastName: String
-    @objc dynamic var photo: String
+    /// Идентификатор
+    @Persisted(primaryKey: true) var id: Int
+    /// Имя
+    @Persisted var firstName: String
+    /// Фамилия
+    @Persisted var lastName: String
+    /// Фото
+    @Persisted var photo: String
     enum CodingKeys: String, CodingKey {
         case id
         case firstName = "first_name"

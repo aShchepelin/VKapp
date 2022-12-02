@@ -36,7 +36,7 @@ final class AvailableGroupsTableViewController: UITableViewController {
                 self.searchGroupItems = data.response.groups
                 self.tableView.reloadData()
             case let .failure(error):
-                print(error)
+                print(error.localizedDescription)
             }
         }
     }
