@@ -23,6 +23,10 @@ final class NetworkService: NetworkServiceProtocol {
         vkAPIService.sendRequest(urlString: RequestType.groups.urlString, complition: complition)
     }
 
+    func fetchOperationalGroups() {
+        vkAPIService.getGroups(urlString: RequestType.groups.urlString)
+    }
+
     func fetchPhotos(for id: String, complition: @escaping (Result<Photo, Error>) -> Void) {
         vkAPIService.sendRequest(urlString: RequestType.photos(id: id).urlString, complition: complition)
     }

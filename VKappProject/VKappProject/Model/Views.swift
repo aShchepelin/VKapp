@@ -4,5 +4,5 @@
 /// Количество просмотров
 struct Views: Decodable {
     /// Просмотры
-    let count: Int
+    let count: Int?
 }
