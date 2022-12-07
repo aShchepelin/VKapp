@@ -1,4 +1,4 @@
-// NewsCellProtocol.swift
+// NewsCellConfigurable.swift
 // Copyright © RoadMap. All rights reserved.
 
 import UIKit
@@ -8,5 +8,5 @@ typealias NewsCell = UITableViewCell & NewsCellConfigurable
 
 /// Протокол для конфигурации ячеек
 protocol NewsCellConfigurable {
-    func configureCell(_ news: NewsItem)
+    func configure(_ news: NewsItem)
 }

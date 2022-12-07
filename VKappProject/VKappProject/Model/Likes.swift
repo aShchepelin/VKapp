@@ -1,4 +1,4 @@
-// NewsLike.swift
+// Likes.swift
 // Copyright © RoadMap. All rights reserved.
 
 /// Количество лайков

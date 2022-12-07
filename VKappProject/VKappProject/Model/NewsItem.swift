@@ -1,7 +1,7 @@
 // NewsItem.swift
 // Copyright © RoadMap. All rights reserved.
 
-/// Содержание публикации
+/// Новость
 final class NewsItem: Decodable {
     enum CodingKeys: String, CodingKey {
         case id

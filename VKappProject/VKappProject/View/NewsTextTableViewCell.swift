@@ -4,14 +4,17 @@
 import UIKit
 
 /// Текст публикации
-final class NewsTextTableViewCell: UITableViewCell, NewsCellConfigurable {
+final class NewsTextTableViewCell: UITableViewCell {
     // MARK: - Private IBOutlets
 
     @IBOutlet private var postTextView: UITextView!
 
     // MARK: - Public Methods
 
-    func configureCell(_ news: NewsItem) {
+    func configure(_ news: NewsItem) {
         postTextView.text = news.text
     }
 }
+
+/// NewsCellConfigurable
+extension NewsTextTableViewCell: NewsCellConfigurable {}

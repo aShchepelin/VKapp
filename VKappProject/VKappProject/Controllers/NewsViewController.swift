@@ -43,23 +43,23 @@ final class NewsViewController: UIViewController {
             guard let self = self else { return }
             switch result {
             case let .success(data):
-                self.filteringNews(response: data)
+                self.filteringNews(newsResponse: data)
             case let .failure(error):
                 print(error.localizedDescription)
             }
         }
     }
 
-    private func filteringNews(response: NewsResponse) {
-        response.news.forEach { news in
+    private func filteringNews(newsResponse: NewsResponse) {
+        newsResponse.news.forEach { news in
             if news.sourceID < 0 {
-                guard let group = response.groups.filter({ group in
+                guard let group = newsResponse.groups.filter({ group in
                     group.id == news.sourceID * -1
                 }).first else { return }
                 news.authorName = group.name
                 news.avatar = group.photo
             } else {
-                guard let user = response.users.filter({ user in
+                guard let user = newsResponse.users.filter({ user in
                     user.id == news.sourceID
                 }).first else { return }
                 news.authorName = "\(user.firstName) \(user.lastName)"
@@ -67,7 +67,7 @@ final class NewsViewController: UIViewController {
             }
         }
         DispatchQueue.main.async {
-            self.news = response.news
+            self.news = newsResponse.news
             self.newsTableView.reloadData()
         }
     }
@@ -85,7 +85,7 @@ extension NewsViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let post = news[indexPath.section]
+        let news = news[indexPath.section]
         let cellType = NewsCellType(rawValue: indexPath.row) ?? .content
         var cellIdentifier = ""
 
@@ -104,7 +104,7 @@ extension NewsViewController: UITableViewDelegate, UITableViewDataSource {
                 withIdentifier: cellIdentifier
             ) as? NewsCell
         else { return UITableViewCell() }
-        cell.configureCell(post)
+        cell.configure(news)
         return cell
     }
 }

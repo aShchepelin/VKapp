@@ -4,7 +4,7 @@
 import UIKit
 
 /// Интерактивная панель публикации
-final class NewsFooterTableViewCell: UITableViewCell, NewsCellConfigurable {
+final class NewsFooterTableViewCell: UITableViewCell {
     // MARK: - Private IBOutlets
 
     @IBOutlet private var likeCountLabel: UILabel!
@@ -17,7 +17,7 @@ final class NewsFooterTableViewCell: UITableViewCell, NewsCellConfigurable {
 
     // MARK: - Public Methods
 
-    func configureCell(_ news: NewsItem) {
+    func configure(_ news: NewsItem) {
         likeCountLabel.text = "\(news.likes.count)"
         viewsCountLabel.text = "\(news.views.count)"
     }
@@ -72,3 +72,6 @@ final class NewsFooterTableViewCell: UITableViewCell, NewsCellConfigurable {
         likeCountLabel.layer.add(animation, forKey: Constants.Items.positionForAnimation)
     }
 }
+
+/// NewsCellConfigurable
+extension NewsFooterTableViewCell: NewsCellConfigurable {}

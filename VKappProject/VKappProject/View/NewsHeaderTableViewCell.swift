@@ -4,7 +4,7 @@
 import UIKit
 
 /// Автор публикации
-final class NewsHeaderTableViewCell: UITableViewCell, NewsCellConfigurable {
+final class NewsHeaderTableViewCell: UITableViewCell {
     // MARK: - Private IBOutlets
 
     @IBOutlet private var avatarImageView: UIImageView!
@@ -13,7 +13,7 @@ final class NewsHeaderTableViewCell: UITableViewCell, NewsCellConfigurable {
 
     // MARK: - Public Methods
 
-    func configureCell(_ news: NewsItem) {
+    func configure(_ news: NewsItem) {
         guard let url = URL(string: news.avatar ?? "") else { return }
         let date = dateFormatter(date: news.date)
         avatarImageView.load(url: url)
@@ -33,3 +33,6 @@ final class NewsHeaderTableViewCell: UITableViewCell, NewsCellConfigurable {
         return localDate
     }
 }
+
+/// NewsCellConfigurable
+extension NewsHeaderTableViewCell: NewsCellConfigurable {}
