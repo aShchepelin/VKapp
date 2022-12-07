@@ -23,6 +23,22 @@ final class VKAPIService {
         }
     }
 
+    func sendNewsRequest(urlString: String, complition: @escaping (Result<NewsResponse, Error>) -> Void) {
+        AF.request(
+            "\(Constants.URLComponents.baseURL)\(urlString)" +
+                "\(Constants.URLComponents.version)"
+        )
+        .responseJSON { response in
+            guard let response = response.data else { return }
+            do {
+                let object = try JSONDecoder().decode(News.self, from: response)
+                complition(.success(object.response))
+            } catch {
+                complition(.failure(error))
+            }
+        }
+    }
+
     func webViewURLComponents() -> URLRequest? {
         var urlComponents = URLComponents()
         urlComponents.scheme = Constants.WebViewURLComponents.scheme

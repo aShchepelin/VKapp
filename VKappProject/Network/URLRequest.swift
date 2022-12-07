@@ -7,6 +7,7 @@ enum RequestType {
     case groups
     case photos(id: String)
     case searchGroups(searchQuery: String)
+    case news
     var urlString: String {
         switch self {
         case .friends:
@@ -23,6 +24,9 @@ enum RequestType {
             return "\(Constants.URLComponents.searchGroupMethod)" +
                 "\(Constants.URLComponents.accessToken)" +
                 "\(Constants.URLComponents.searchedQuery)\(searchQuery)"
+        case .news:
+            return "\(Constants.URLComponents.getNewsMethod)\(Constants.URLComponents.accessToken)" +
+                "\(Constants.URLComponents.newsFilterPosts)"
         }
     }
 }

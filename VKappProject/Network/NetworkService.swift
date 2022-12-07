@@ -11,6 +11,10 @@ final class NetworkService: NetworkServiceProtocol {
 
     // MARK: - Public Methods
 
+    func fetchNews(complition: @escaping (Result<NewsResponse, Error>) -> Void) {
+        vkAPIService.sendNewsRequest(urlString: RequestType.news.urlString, complition: complition)
+    }
+
     func fetchFriends(complition: @escaping (Result<User, Error>) -> Void) {
         vkAPIService.sendRequest(urlString: RequestType.friends.urlString, complition: complition)
     }
