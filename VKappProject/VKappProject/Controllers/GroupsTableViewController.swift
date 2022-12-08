@@ -18,8 +18,6 @@ final class GroupsTableViewController: UITableViewController {
         }
     }
 
-    var groups: [GroupItem] = []
-
     private let networkService = NetworkService()
     private let realmService = RealmService()
     private var notificationToken: NotificationToken?
@@ -34,8 +32,6 @@ final class GroupsTableViewController: UITableViewController {
     override func awakeFromNib() {
         super.awakeFromNib()
         setupUI()
-        groupsFetch()
-        print(groups)
     }
 
     // MARK: - Private Methods
@@ -44,34 +40,15 @@ final class GroupsTableViewController: UITableViewController {
         loadGroups()
     }
 
-    private func groupsFetch() {
-        networkService.fetchOperationalGroups()
+    private func operationGroups() {
+        networkService.fetchOperationGroups()
     }
 
     private func loadGroups() {
         guard let groups = realmService.getData(GroupItem.self) else { return }
         addNotificationToken(result: groups)
-        if !groups.isEmpty {
-            groupItems = groups
-        } else {
-            fetchGroups()
-        }
-    }
-
-    private func fetchGroups() {
-        // OperationQueue
-        // let operationQueue = result
-        // groupItems = result
-        // SaveDataToRealm
-        networkService.fetchGroups { [weak self] group in
-            guard let self = self else { return }
-            switch group {
-            case let .success(data):
-                self.realmService.saveData(data.response.groups)
-            case let .failure(error):
-                print(error.localizedDescription)
-            }
-        }
+        operationGroups()
+        groupItems = groups
     }
 
     private func addNotificationToken(result: Results<GroupItem>) {

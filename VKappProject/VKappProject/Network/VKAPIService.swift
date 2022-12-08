@@ -57,9 +57,9 @@ final class VKAPIService {
         parseData.addDependency(getDataOperation)
         opq.addOperation(parseData)
         let groupsTableViewController = GroupsTableViewController()
-        let reloadTable = ReloadTableController(controller: groupsTableViewController)
-        reloadTable.addDependency(parseData)
-        opq.addOperation(reloadTable)
+        let saveRealm = SaveRealmOperation()
+        saveRealm.addDependency(parseData)
+        opq.addOperation(saveRealm)
     }
 
     func webViewURLComponents() -> URLRequest? {

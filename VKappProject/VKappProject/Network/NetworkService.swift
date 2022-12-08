@@ -8,6 +8,7 @@ final class NetworkService: NetworkServiceProtocol {
     // MARK: - Private Properties
 
     private let vkAPIService = VKAPIService()
+    private let promiseServise = PromiseService()
 
     // MARK: - Public Methods
 
@@ -23,7 +24,7 @@ final class NetworkService: NetworkServiceProtocol {
         vkAPIService.sendRequest(urlString: RequestType.groups.urlString, complition: complition)
     }
 
-    func fetchOperationalGroups() {
+    func fetchOperationGroups() {
         vkAPIService.getGroups(urlString: RequestType.groups.urlString)
     }
 

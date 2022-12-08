@@ -36,7 +36,8 @@
 		6F611DC3294136EC00BB740A /* GetDataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F611DC2294136EC00BB740A /* GetDataOperation.swift */; };
 		6F611DC52941374F00BB740A /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F611DC42941374F00BB740A /* AsyncOperation.swift */; };
 		6F611DC729413DF300BB740A /* ParsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F611DC629413DF300BB740A /* ParsData.swift */; };
-		6F611DC929413F4F00BB740A /* ReloadTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F611DC829413F4F00BB740A /* ReloadTableController.swift */; };
+		6F611DC929413F4F00BB740A /* SaveRealmOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F611DC829413F4F00BB740A /* SaveRealmOperation.swift */; };
+		6F611DCC2942608600BB740A /* PromiseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F611DCB2942608600BB740A /* PromiseService.swift */; };
 		6F96DC242919C197006892BD /* NewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F96DC232919C197006892BD /* NewsViewController.swift */; };
 		6F96DC262919C295006892BD /* News.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F96DC252919C294006892BD /* News.swift */; };
 		6FB91C442935406800C0F3AB /* RealmService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB91C432935406800C0F3AB /* RealmService.swift */; };
@@ -100,7 +101,8 @@
 		6F611DC2294136EC00BB740A /* GetDataOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetDataOperation.swift; sourceTree = "<group>"; };
 		6F611DC42941374F00BB740A /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 		6F611DC629413DF300BB740A /* ParsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParsData.swift; sourceTree = "<group>"; };
-		6F611DC829413F4F00BB740A /* ReloadTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReloadTableController.swift; sourceTree = "<group>"; };
+		6F611DC829413F4F00BB740A /* SaveRealmOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveRealmOperation.swift; sourceTree = "<group>"; };
+		6F611DCB2942608600BB740A /* PromiseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromiseService.swift; sourceTree = "<group>"; };
 		6F96DC232919C197006892BD /* NewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewController.swift; sourceTree = "<group>"; };
 		6F96DC252919C294006892BD /* News.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = News.swift; sourceTree = "<group>"; };
 		6FB91C432935406800C0F3AB /* RealmService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmService.swift; sourceTree = "<group>"; };
@@ -235,7 +237,7 @@
 				6F611DC2294136EC00BB740A /* GetDataOperation.swift */,
 				6F611DC42941374F00BB740A /* AsyncOperation.swift */,
 				6F611DC629413DF300BB740A /* ParsData.swift */,
-				6F611DC829413F4F00BB740A /* ReloadTableController.swift */,
+				6F611DC829413F4F00BB740A /* SaveRealmOperation.swift */,
 			);
 			path = Operation;
 			sourceTree = "<group>";
@@ -244,6 +246,7 @@
 			isa = PBXGroup;
 			children = (
 				6FF07351292D579F0030F59F /* VKAPIService.swift */,
+				6F611DCB2942608600BB740A /* PromiseService.swift */,
 				6FF6B0A7292E72C100EC01C6 /* URLRequest.swift */,
 				6FF6B0C32932482B00EC01C6 /* NetworkServiceProtocol.swift */,
 				6FF6B0C52932492600EC01C6 /* NetworkService.swift */,
@@ -256,7 +259,6 @@
 		6FFC08D3291034F700AE87B1 = {
 			isa = PBXGroup;
 			children = (
-				6FF0734E292D44AF0030F59F /* Network */,
 				6FFC08DE291034F700AE87B1 /* VKappProject */,
 				6FFC08DD291034F700AE87B1 /* Products */,
 				A0CF7508A108D7E727540C22 /* Pods */,
@@ -275,6 +277,7 @@
 		6FFC08DE291034F700AE87B1 /* VKappProject */ = {
 			isa = PBXGroup;
 			children = (
+				6FF0734E292D44AF0030F59F /* Network */,
 				6F247D79291D6A3600491C58 /* Animators */,
 				6FFC08DF291034F700AE87B1 /* AppDelegate.swift */,
 				6FFC08E1291034F700AE87B1 /* SceneDelegate.swift */,
@@ -490,11 +493,12 @@
 				6F0FC644293E7A5A00CDA4D4 /* NewsImageTableViewCell.swift in Sources */,
 				6F422FB5292BEDD2004A78EA /* Session.swift in Sources */,
 				6FF6B0C22931244300EC01C6 /* Size.swift in Sources */,
+				6F611DCC2942608600BB740A /* PromiseService.swift in Sources */,
 				6FC52B3D29147503006FEFA1 /* LikePhotoControl.swift in Sources */,
 				6F0FC648293E8E6C00CDA4D4 /* NewsCellConfigurable.swift in Sources */,
 				6FFC08E2291034F700AE87B1 /* SceneDelegate.swift in Sources */,
 				6FF6B0B1292FCB9800EC01C6 /* UIImageView+Exstension.swift in Sources */,
-				6F611DC929413F4F00BB740A /* ReloadTableController.swift in Sources */,
+				6F611DC929413F4F00BB740A /* SaveRealmOperation.swift in Sources */,
 				6F0FC642293E7A4200CDA4D4 /* NewsFooterTableViewCell.swift in Sources */,
 				6F4C9F2F291C426700D608CA /* FriendImagesViewController.swift in Sources */,
 				6F247D81291DA76700491C58 /* CustomInteractiveTransition.swift in Sources */,
