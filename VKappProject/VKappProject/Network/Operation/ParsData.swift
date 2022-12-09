@@ -6,9 +6,11 @@ import Foundation
 /// Парсинг запроса
 final class ParseData: Operation {
     // MARK: - Public Properties
+
     var outputData: [GroupItem] = []
-    
+
     // MARK: - Public Methods
+
     override func main() {
         guard let getDataOperation = dependencies.first as? GetDataOperation,
               let data = getDataOperation.data else { return }

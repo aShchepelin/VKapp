@@ -11,8 +11,7 @@ final class PromiseService {
     func sendFriendsRequest() -> Promise<User> {
         let promise = Promise<User> { resolver in
             AF.request(
-                "\(Constants.URLComponents.baseURL)\(RequestType.friends.urlString)" +
-                    "\(Constants.URLComponents.version)"
+                "\(Constants.URLComponents.baseURL)\(RequestType.friends.urlString)\(Constants.URLComponents.version)"
             )
             .responseData { response in
                 guard let response = response.data else { return }

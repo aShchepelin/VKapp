@@ -14,6 +14,12 @@ final class GetDataOperation: AsyncOperation {
 
     private var request: DataRequest
 
+    // MARK: - Initializator
+
+    init(request: DataRequest) {
+        self.request = request
+    }
+
     // MARK: - Public Method
 
     override func cancel() {
@@ -23,14 +29,9 @@ final class GetDataOperation: AsyncOperation {
 
     override func main() {
         request.responseData(queue: DispatchQueue.global()) { [weak self] response in
-            self?.data = response.data
-            self?.state = .finished
+            guard let self = self else { return }
+            self.data = response.data
+            self.state = .finished
         }
-    }
-
-    // MARK: - Initializator
-
-    init(request: DataRequest) {
-        self.request = request
     }
 }
