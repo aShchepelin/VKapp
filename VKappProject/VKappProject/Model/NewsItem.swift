@@ -27,7 +27,7 @@ final class NewsItem: Decodable {
     /// Дата публикации
     var date: Int
     /// Лайки
-    var likes: Likes
+    var likes: Likes?
     /// Просмотры
-    var views: Views
+    var views: Views?
 }

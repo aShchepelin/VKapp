@@ -39,6 +39,28 @@ final class VKAPIService {
         }
     }
 
+    func getGroupRequest(urlString: String) -> DataRequest {
+        let request = AF.request(
+            "\(Constants.URLComponents.baseURL)\(urlString)\(Constants.URLComponents.version)"
+        )
+
+        return request
+    }
+
+    func getGroups(urlString: String) {
+        let operationQueue = OperationQueue()
+        let request = getGroupRequest(urlString: urlString)
+        let getDataOperation = GetDataOperation(request: request)
+        operationQueue.addOperation(getDataOperation)
+        let parseData = ParseData()
+        parseData.addDependency(getDataOperation)
+        operationQueue.addOperation(parseData)
+        let groupsTableViewController = GroupsTableViewController()
+        let saveRealm = SaveRealmOperation()
+        saveRealm.addDependency(parseData)
+        operationQueue.addOperation(saveRealm)
+    }
+
     func webViewURLComponents() -> URLRequest? {
         var urlComponents = URLComponents()
         urlComponents.scheme = Constants.WebViewURLComponents.scheme

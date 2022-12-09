@@ -40,26 +40,15 @@ final class GroupsTableViewController: UITableViewController {
         loadGroups()
     }
 
+    private func operationGroups() {
+        networkService.fetchOperationGroups()
+    }
+
     private func loadGroups() {
         guard let groups = realmService.getData(GroupItem.self) else { return }
         addNotificationToken(result: groups)
-        if !groups.isEmpty {
-            groupItems = groups
-        } else {
-            fetchGroups()
-        }
-    }
-
-    private func fetchGroups() {
-        networkService.fetchGroups { [weak self] group in
-            guard let self = self else { return }
-            switch group {
-            case let .success(data):
-                self.realmService.saveData(data.response.groups)
-            case let .failure(error):
-                print(error.localizedDescription)
-            }
-        }
+        operationGroups()
+        groupItems = groups
     }
 
     private func addNotificationToken(result: Results<GroupItem>) {

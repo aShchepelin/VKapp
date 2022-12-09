@@ -4,5 +4,5 @@
 /// Количество лайков
 struct Likes: Decodable {
     /// Лайки
-    let count: Int
+    let count: Int?
 }
