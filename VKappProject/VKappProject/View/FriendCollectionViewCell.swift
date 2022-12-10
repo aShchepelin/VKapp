@@ -10,9 +10,8 @@ final class FriendCollectionViewCell: UICollectionViewCell {
     @IBOutlet private var friendImageView: UIImageView!
 
     // MARK: - Public Methods
-
-    func configureCell(_ url: String) {
-        guard let url = URL(string: url) else { return }
-        friendImageView.load(url: url)
+    
+    func configure(image: UIImage?) {
+        friendImageView.image = image
     }
 }

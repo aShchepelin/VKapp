@@ -38,6 +38,8 @@
 		6F611DC729413DF300BB740A /* ParsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F611DC629413DF300BB740A /* ParsData.swift */; };
 		6F611DC929413F4F00BB740A /* SaveRealmOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F611DC829413F4F00BB740A /* SaveRealmOperation.swift */; };
 		6F611DCC2942608600BB740A /* PromiseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F611DCB2942608600BB740A /* PromiseService.swift */; };
+		6F611DCE29449E6300BB740A /* PhotoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F611DCD29449E6300BB740A /* PhotoService.swift */; };
+		6F611DD22944A99600BB740A /* PhotoService+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F611DD12944A99600BB740A /* PhotoService+Extension.swift */; };
 		6F96DC242919C197006892BD /* NewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F96DC232919C197006892BD /* NewsViewController.swift */; };
 		6F96DC262919C295006892BD /* News.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F96DC252919C294006892BD /* News.swift */; };
 		6FB91C442935406800C0F3AB /* RealmService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB91C432935406800C0F3AB /* RealmService.swift */; };
@@ -103,6 +105,8 @@
 		6F611DC629413DF300BB740A /* ParsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParsData.swift; sourceTree = "<group>"; };
 		6F611DC829413F4F00BB740A /* SaveRealmOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveRealmOperation.swift; sourceTree = "<group>"; };
 		6F611DCB2942608600BB740A /* PromiseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromiseService.swift; sourceTree = "<group>"; };
+		6F611DCD29449E6300BB740A /* PhotoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoService.swift; sourceTree = "<group>"; };
+		6F611DD12944A99600BB740A /* PhotoService+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhotoService+Extension.swift"; sourceTree = "<group>"; };
 		6F96DC232919C197006892BD /* NewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewController.swift; sourceTree = "<group>"; };
 		6F96DC252919C294006892BD /* News.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = News.swift; sourceTree = "<group>"; };
 		6FB91C432935406800C0F3AB /* RealmService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmService.swift; sourceTree = "<group>"; };
@@ -251,6 +255,8 @@
 				6FF6B0C32932482B00EC01C6 /* NetworkServiceProtocol.swift */,
 				6FF6B0C52932492600EC01C6 /* NetworkService.swift */,
 				6FB91C432935406800C0F3AB /* RealmService.swift */,
+				6F611DCD29449E6300BB740A /* PhotoService.swift */,
+				6F611DD12944A99600BB740A /* PhotoService+Extension.swift */,
 				6F611DCA294143BE00BB740A /* Operation */,
 			);
 			path = Network;
@@ -496,6 +502,7 @@
 				6F611DCC2942608600BB740A /* PromiseService.swift in Sources */,
 				6FC52B3D29147503006FEFA1 /* LikePhotoControl.swift in Sources */,
 				6F0FC648293E8E6C00CDA4D4 /* NewsCellConfigurable.swift in Sources */,
+				6F611DD22944A99600BB740A /* PhotoService+Extension.swift in Sources */,
 				6FFC08E2291034F700AE87B1 /* SceneDelegate.swift in Sources */,
 				6FF6B0B1292FCB9800EC01C6 /* UIImageView+Exstension.swift in Sources */,
 				6F611DC929413F4F00BB740A /* SaveRealmOperation.swift in Sources */,
@@ -508,6 +515,7 @@
 				6F1A183C2912FB7C001F85A2 /* Constants.swift in Sources */,
 				6F0FC64A293FA3F300CDA4D4 /* NewsResponse.swift in Sources */,
 				6F0FC640293E7A2D00CDA4D4 /* NewsHeaderTableViewCell.swift in Sources */,
+				6F611DCE29449E6300BB740A /* PhotoService.swift in Sources */,
 				6FB91C442935406800C0F3AB /* RealmService.swift in Sources */,
 				6F247D7D291D6FFD00491C58 /* CustomPushTransitionAnimator.swift in Sources */,
 				6FF6B0BC2931239000EC01C6 /* GroupItem.swift in Sources */,
