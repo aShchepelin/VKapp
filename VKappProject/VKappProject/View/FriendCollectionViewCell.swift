@@ -10,7 +10,7 @@ final class FriendCollectionViewCell: UICollectionViewCell {
     @IBOutlet private var friendImageView: UIImageView!
 
     // MARK: - Public Methods
-    
+
     func configure(image: UIImage?) {
         friendImageView.image = image
     }

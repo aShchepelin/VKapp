@@ -5,51 +5,27 @@ import UIKit
 
 /// Хранение в контейнере DataReloadable классы таблиц и коллекций
 extension PhotoService {
-    class Table: DataReloadable {
-        let table: UITableView
-
-        init(table: UITableView) {
-            self.table = table
-        }
-
-        func reloadRow(atIndexpath indexPath: IndexPath) {
-            table.reloadRows(at: [indexPath], with: .none)
-        }
-    }
-
-    class TableViewController: DataReloadable {
-        let table: UITableViewController
-
-        init(table: UITableViewController) {
-            self.table = table
-        }
-
-        func reloadRow(atIndexpath indexPath: IndexPath) {
-            table.tableView.reloadRows(at: [indexPath], with: .none)
-        }
-    }
-
     class Collection: DataReloadable {
-        let collection: UICollectionView
+        let collectionView: UICollectionView
 
-        init(collection: UICollectionView) {
-            self.collection = collection
+        init(collectionView: UICollectionView) {
+            self.collectionView = collectionView
         }
 
         func reloadRow(atIndexpath indexPath: IndexPath) {
-            collection.reloadItems(at: [indexPath])
+            collectionView.reloadItems(at: [indexPath])
         }
     }
 
     class CollectionViewController: DataReloadable {
-        let collection: UICollectionViewController
+        let collectionViewController: UICollectionViewController
 
-        init(collection: UICollectionViewController) {
-            self.collection = collection
+        init(collectionViewController: UICollectionViewController) {
+            self.collectionViewController = collectionViewController
         }
 
         func reloadRow(atIndexpath indexPath: IndexPath) {
-            collection.collectionView.reloadItems(at: [indexPath])
+            collectionViewController.collectionView.reloadItems(at: [indexPath])
         }
     }
 }

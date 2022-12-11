@@ -15,6 +15,7 @@ final class PhotoService {
 
     private enum Constants {
         static let imagesText = "images"
+        static let cacheLifeTime = 30.0 * 24.0 * 60.0 * 60.0
         static let separatorText: Character = "/"
         static let defaultText: Substring = "default"
         static let fileManagerDefault = FileManager.default
@@ -22,7 +23,7 @@ final class PhotoService {
 
     // MARK: - Private Properties
 
-    private let cacheLifeTime: TimeInterval = 30 * 24 * 60 * 60
+    private let cacheLifeTime: TimeInterval = Constants.cacheLifeTime
     private let container: DataReloadable
 
     private static let pathName: String = {
@@ -45,20 +46,12 @@ final class PhotoService {
 
     // MARK: - Initializers
 
-    init(container: UITableView) {
-        self.container = Table(table: container)
-    }
-
     init(container: UICollectionView) {
-        self.container = Collection(collection: container)
+        self.container = Collection(collectionView: container)
     }
 
     init(container: UICollectionViewController) {
-        self.container = CollectionViewController(collection: container)
-    }
-
-    init(container: UITableViewController) {
-        self.container = TableViewController(table: container)
+        self.container = CollectionViewController(collectionViewController: container)
     }
 
     // MARK: - Public Methods
