@@ -13,6 +13,7 @@ final class FriendCollectionViewController: UICollectionViewController {
 
     private let networkService = NetworkService()
     private let realmService = RealmService()
+    private var photoService: PhotoService?
 
     private var photoItems: [PhotoItem] = [] {
         didSet {
@@ -42,6 +43,7 @@ final class FriendCollectionViewController: UICollectionViewController {
     // MARK: - Private Methods
 
     private func setupUI() {
+        photoService = PhotoService(container: collectionView)
         loadPhotos()
     }
 
@@ -88,7 +90,7 @@ final class FriendCollectionViewController: UICollectionViewController {
             for: indexPath
         ) as? FriendCollectionViewCell,
             let photo = photoItems[indexPath.row].sizes.last?.url else { return UICollectionViewCell() }
-        cell.configureCell(photo)
+        cell.configure(url: photo, photoService: photoService)
         return cell
     }
 }
