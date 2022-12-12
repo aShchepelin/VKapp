@@ -203,6 +203,7 @@
 		6F1A183A2912FAE7001F85A2 /* Exstensions */ = {
 			isa = PBXGroup;
 			children = (
+				6F611DD12944A99600BB740A /* PhotoService+Extension.swift */,
 				6F1A18242912C80F001F85A2 /* UIViewController+Exstension.swift */,
 				6FFC091D291193E700AE87B1 /* UITextField+Exstension.swift */,
 				6FF6B0B0292FCB9800EC01C6 /* UIImageView+Exstension.swift */,
@@ -256,7 +257,6 @@
 				6FF6B0C52932492600EC01C6 /* NetworkService.swift */,
 				6FB91C432935406800C0F3AB /* RealmService.swift */,
 				6F611DCD29449E6300BB740A /* PhotoService.swift */,
-				6F611DD12944A99600BB740A /* PhotoService+Extension.swift */,
 				6F611DCA294143BE00BB740A /* Operation */,
 			);
 			path = Network;

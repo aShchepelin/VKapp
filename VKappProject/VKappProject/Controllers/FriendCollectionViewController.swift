@@ -43,7 +43,7 @@ final class FriendCollectionViewController: UICollectionViewController {
     // MARK: - Private Methods
 
     private func setupUI() {
-        photoService = PhotoService(container: self)
+        photoService = PhotoService(container: collectionView)
         loadPhotos()
     }
 
@@ -90,10 +90,7 @@ final class FriendCollectionViewController: UICollectionViewController {
             for: indexPath
         ) as? FriendCollectionViewCell,
             let photo = photoItems[indexPath.row].sizes.last?.url else { return UICollectionViewCell() }
-        cell.configure(image: photoService?.photo(
-            atIndexpath: indexPath,
-            byUrl: photo
-        ))
+        cell.configure(url: photo, photoService: photoService)
         return cell
     }
 }

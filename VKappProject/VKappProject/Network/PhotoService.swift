@@ -24,7 +24,7 @@ final class PhotoService {
     // MARK: - Private Properties
 
     private let cacheLifeTime: TimeInterval = Constants.cacheLifeTime
-    private let container: DataReloadable
+    private let container: Collection
 
     private static let pathName: String = {
         let pathName = Constants.imagesText
@@ -50,20 +50,16 @@ final class PhotoService {
         self.container = Collection(collectionView: container)
     }
 
-    init(container: UICollectionViewController) {
-        self.container = CollectionViewController(collectionViewController: container)
-    }
-
     // MARK: - Public Methods
 
-    func photo(atIndexpath indexPath: IndexPath, byUrl url: String) -> UIImage? {
+    func photo(byUrl url: String) -> UIImage? {
         var image: UIImage?
         if let photo = imagesMap[url] {
             image = photo
         } else if let photo = getImageFromCache(url: url) {
             image = photo
         } else {
-            loadPhoto(atIndexpath: indexPath, byUrl: url)
+            loadPhoto(byUrl: url)
         }
         return image
     }
@@ -104,17 +100,17 @@ final class PhotoService {
         return image
     }
 
-    private func loadPhoto(atIndexpath indexPath: IndexPath, byUrl url: String) {
-        AF.request(url).responseData(queue: DispatchQueue.global()) { [weak self] response in
+    private func loadPhoto(byUrl url: String) {
+        AF.request(url).responseData(queue: DispatchQueue.global()) { response in
             guard
                 let data = response.data,
                 let image = UIImage(data: data) else { return }
             DispatchQueue.main.async {
-                self?.imagesMap[url] = image
+                self.imagesMap[url] = image
             }
-            self?.saveImageToCache(url: url, image: image)
+            self.saveImageToCache(url: url, image: image)
             DispatchQueue.main.async {
-                self?.container.reloadRow(atIndexpath: indexPath)
+                self.container.reloadData()
             }
         }
     }
