@@ -3,5 +3,6 @@
 
 /// Группа
 struct Group: Decodable {
+    /// Ответ
     let response: ResponseGroup
 }

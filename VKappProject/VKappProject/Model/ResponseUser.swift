@@ -3,6 +3,7 @@
 
 /// Друзья пользователя
 struct ResponseUser: Codable {
+    /// Друзья
     let friends: [UserItem]
 
     enum CodingKeys: String, CodingKey {

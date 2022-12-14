@@ -17,7 +17,7 @@ final class NewsFooterTableViewCell: UITableViewCell {
 
     // MARK: - Public Methods
 
-    func configure(_ news: NewsItem) {
+    func configure(_ news: NewsItem, photoService: PhotoService) {
         guard let views = news.views?.count,
               let likes = news.likes?.count else { return }
         likeCountLabel.text = "\(likes)"

@@ -70,7 +70,7 @@ extension AuthorizationViewController: WKNavigationDelegate {
         let vc = storyBoard
             .instantiateViewController(
                 withIdentifier: Constants.Identifiers
-                    .loginViewControllerIdentifier
+                    .tabBarControllerIdentifier
             )
         vc.modalPresentationStyle = .fullScreen
         present(vc, animated: false, completion: nil)

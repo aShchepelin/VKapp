@@ -7,7 +7,7 @@ import Alamofire
 final class VKAPIService {
     // MARK: - Public Method
 
-    func sendRequest<T: Decodable>(urlString: String, complition: @escaping (Result<T, Error>) -> Void) {
+    func sendRequest<T: Decodable>(urlString: String, completion: @escaping (Result<T, Error>) -> Void) {
         AF.request(
             "\(Constants.URLComponents.baseURL)\(urlString)" +
                 "\(Constants.URLComponents.version)"
@@ -16,25 +16,31 @@ final class VKAPIService {
             guard let response = response.data else { return }
             do {
                 let object = try JSONDecoder().decode(T.self, from: response)
-                complition(.success(object))
+                completion(.success(object))
             } catch {
-                complition(.failure(error))
+                completion(.failure(error))
             }
         }
     }
 
-    func sendNewsRequest(urlString: String, complition: @escaping (Result<NewsResponse, Error>) -> Void) {
+    func sendNewsRequest(
+        startTime: TimeInterval? = nil,
+        nextPage: String = Constants.Items.emptyString,
+        urlString: String,
+        completion: @escaping (Result<NewsResponse, Error>) -> Void
+    ) {
         AF.request(
             "\(Constants.URLComponents.baseURL)\(urlString)" +
-                "\(Constants.URLComponents.version)"
+                "\(Constants.URLComponents.version)\(Constants.URLComponents.startTime)" +
+                "\(startTime ?? 0)\(Constants.URLComponents.startTime)\(nextPage)"
         )
         .responseJSON { response in
             guard let response = response.data else { return }
             do {
                 let object = try JSONDecoder().decode(News.self, from: response)
-                complition(.success(object.response))
+                completion(.success(object.response))
             } catch {
-                complition(.failure(error))
+                completion(.failure(error))
             }
         }
     }

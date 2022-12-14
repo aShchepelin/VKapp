@@ -3,6 +3,7 @@
 
 /// Группы пользователя
 struct ResponseGroup: Codable {
+    /// Группы
     let groups: [GroupItem]
     enum CodingKeys: String, CodingKey {
         case groups = "items"

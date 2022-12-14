@@ -7,12 +7,15 @@ struct NewsResponse: Decodable {
         case news = "items"
         case users = "profiles"
         case groups
+        case nextPage = "next_from"
     }
 
     /// Новости
-    var news: [NewsItem]
+    let news: [NewsItem]
     /// Пользователи
-    var users: [UserItem]
+    let users: [UserItem]
     /// Группы
-    var groups: [GroupItem]
+    let groups: [GroupItem]
+    /// Следующая страница
+    let nextPage: String?
 }

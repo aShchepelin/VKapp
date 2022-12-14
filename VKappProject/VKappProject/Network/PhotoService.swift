@@ -24,7 +24,7 @@ final class PhotoService {
     // MARK: - Private Properties
 
     private let cacheLifeTime: TimeInterval = Constants.cacheLifeTime
-    private let container: Collection
+    private let container: DataReloadable
 
     private static let pathName: String = {
         let pathName = Constants.imagesText
@@ -48,6 +48,14 @@ final class PhotoService {
 
     init(container: UICollectionView) {
         self.container = Collection(collectionView: container)
+    }
+
+    init(container: UITableViewController) {
+        self.container = TableViewController(table: container)
+    }
+
+    init(container: UITableView) {
+        self.container = Table(table: container)
     }
 
     // MARK: - Public Methods
@@ -109,9 +117,6 @@ final class PhotoService {
                 self.imagesMap[url] = image
             }
             self.saveImageToCache(url: url, image: image)
-            DispatchQueue.main.async {
-                self.container.reloadData()
-            }
         }
     }
 }
