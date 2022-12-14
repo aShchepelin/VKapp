@@ -11,7 +11,7 @@ final class NewsTextTableViewCell: UITableViewCell {
 
     // MARK: - Public Methods
 
-    func configure(_ news: NewsItem) {
+    func configure(_ news: NewsItem, photoService: PhotoService) {
         postTextLabel.text = news.text
         postTextLabel.numberOfLines = 5
     }

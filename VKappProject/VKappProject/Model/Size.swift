@@ -11,6 +11,6 @@ final class Size: Object, Codable {
     var width: Int
     /// Высота
     var height: Int
-    /// aspectRatio
+    /// Соотношение сторон
     var aspectRatio: CGFloat { CGFloat(height) / CGFloat(width) }
 }

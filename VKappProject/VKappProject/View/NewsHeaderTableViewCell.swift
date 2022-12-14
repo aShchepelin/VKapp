@@ -17,7 +17,7 @@ final class NewsHeaderTableViewCell: UITableViewCell {
 
     // MARK: - Public Methods
 
-    func configure(_ news: NewsItem) {
+    func configure(_ news: NewsItem, photoService: PhotoService) {
         guard let url = URL(string: news.avatar ?? "") else { return }
         postDateLabel.text = dateFormatter.convert(date: news.date)
         avatarImageView.load(url: url)

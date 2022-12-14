@@ -16,36 +16,36 @@ final class NetworkService: NetworkServiceProtocol {
     func fetchNews(
         startTime: TimeInterval?,
         nextPage: String = Constants.Items.emptyString,
-        complition: @escaping (Result<NewsResponse, Error>) -> Void
+        completion: @escaping (Result<NewsResponse, Error>) -> Void
     ) {
         vkAPIService.sendNewsRequest(
             startTime: nil,
             nextPage: Constants.Items.emptyString,
             urlString: RequestType.news.urlString,
-            complition: complition
+            completion: completion
         )
     }
 
-    func fetchFriends(complition: @escaping (Result<User, Error>) -> Void) {
-        vkAPIService.sendRequest(urlString: RequestType.friends.urlString, complition: complition)
+    func fetchFriends(completion: @escaping (Result<User, Error>) -> Void) {
+        vkAPIService.sendRequest(urlString: RequestType.friends.urlString, completion: completion)
     }
 
-    func fetchGroups(complition: @escaping (Result<Group, Error>) -> Void) {
-        vkAPIService.sendRequest(urlString: RequestType.groups.urlString, complition: complition)
+    func fetchGroups(completion: @escaping (Result<Group, Error>) -> Void) {
+        vkAPIService.sendRequest(urlString: RequestType.groups.urlString, completion: completion)
     }
 
     func fetchOperationGroups() {
         vkAPIService.getGroups(urlString: RequestType.groups.urlString)
     }
 
-    func fetchPhotos(for id: String, complition: @escaping (Result<Photo, Error>) -> Void) {
-        vkAPIService.sendRequest(urlString: RequestType.photos(id: id).urlString, complition: complition)
+    func fetchPhotos(for id: String, completion: @escaping (Result<Photo, Error>) -> Void) {
+        vkAPIService.sendRequest(urlString: RequestType.photos(id: id).urlString, completion: completion)
     }
 
-    func fetchSearchGroups(for searchText: String, complition: @escaping (Result<Group, Error>) -> Void) {
+    func fetchSearchGroups(for searchText: String, completion: @escaping (Result<Group, Error>) -> Void) {
         vkAPIService.sendRequest(
             urlString: RequestType.searchGroups(searchQuery: searchText).urlString,
-            complition: complition
+            completion: completion
         )
     }
 }

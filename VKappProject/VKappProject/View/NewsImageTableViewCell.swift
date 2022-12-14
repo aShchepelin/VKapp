@@ -16,9 +16,8 @@ final class NewsImageTableViewCell: UITableViewCell {
         postImageView.image = nil
     }
 
-    func configure(_ news: NewsItem) {
-        guard let url = URL(string: news.attachments?.first?.photo?.sizes.last?.url ?? "") else { return }
-        postImageView.load(url: url)
+    func configure(_ news: NewsItem, photoService: PhotoService) {
+        postImageView.image = photoService.photo(byUrl: news.attachments?.first?.photo?.sizes.last?.url ?? "")
     }
 }
 
