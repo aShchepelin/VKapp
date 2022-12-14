@@ -10,6 +10,7 @@ final class NewsItem: Decodable {
         case date
         case likes
         case views
+        case attachments
     }
 
     /// Идентификатор публикации
@@ -30,4 +31,6 @@ final class NewsItem: Decodable {
     var likes: Likes?
     /// Просмотры
     var views: Views?
+    /// Вложения
+    let attachments: [Attachment]?
 }

@@ -62,6 +62,7 @@ enum Constants {
         static let friendsTableViewControllerIdentifier = "friendsTableViewController"
         static let groupsTableViewControllerIdentifier = "groupsTableViewController"
         static let loginViewControllerIdentifier = "loginViewController"
+        static let tabBarControllerIdentifier = "tabBarController"
     }
 
     enum Items {
@@ -82,6 +83,7 @@ enum Constants {
         static let buttonNormalTag = "0"
         static let positionForAnimation = "position"
         static let emptyString = ""
+        static let dateFormat = "MMM d, h:mm a"
     }
 
     enum ColorNames {
@@ -115,6 +117,8 @@ enum Constants {
         static let searchedQuery = "&q="
         static let extended = "&extended=1"
         static let ownerID = "&owner_id="
+        static let startTime = "&start_time="
+        static let nextFrom = "next_from"
     }
 
     enum WebViewURLComponents {

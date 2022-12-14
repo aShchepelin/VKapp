@@ -7,12 +7,13 @@ import UIKit
 final class NewsTextTableViewCell: UITableViewCell {
     // MARK: - Private IBOutlets
 
-    @IBOutlet private var postTextView: UITextView!
+    @IBOutlet private var postTextLabel: UILabel!
 
     // MARK: - Public Methods
 
     func configure(_ news: NewsItem) {
-        postTextView.text = news.text
+        postTextLabel.text = news.text
+        postTextLabel.numberOfLines = 5
     }
 }
 

@@ -3,5 +3,6 @@
 
 /// Фото
 struct Photo: Decodable {
+    /// Ответ
     let response: ResponsePhoto
 }

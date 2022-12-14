@@ -2,6 +2,7 @@
 // Copyright © RoadMap. All rights reserved.
 
 import Alamofire
+import UIKit
 
 /// Сервис по работе с API
 final class NetworkService: NetworkServiceProtocol {
@@ -12,8 +13,17 @@ final class NetworkService: NetworkServiceProtocol {
 
     // MARK: - Public Methods
 
-    func fetchNews(complition: @escaping (Result<NewsResponse, Error>) -> Void) {
-        vkAPIService.sendNewsRequest(urlString: RequestType.news.urlString, complition: complition)
+    func fetchNews(
+        startTime: TimeInterval?,
+        nextPage: String = Constants.Items.emptyString,
+        complition: @escaping (Result<NewsResponse, Error>) -> Void
+    ) {
+        vkAPIService.sendNewsRequest(
+            startTime: nil,
+            nextPage: Constants.Items.emptyString,
+            urlString: RequestType.news.urlString,
+            complition: complition
+        )
     }
 
     func fetchFriends(complition: @escaping (Result<User, Error>) -> Void) {

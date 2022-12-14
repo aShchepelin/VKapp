@@ -7,4 +7,10 @@ import RealmSwift
 final class Size: Object, Codable {
     /// Адрес фотографии
     @Persisted var url: String
+    /// Ширина
+    var width: Int
+    /// Высота
+    var height: Int
+    /// aspectRatio
+    var aspectRatio: CGFloat { CGFloat(height) / CGFloat(width) }
 }

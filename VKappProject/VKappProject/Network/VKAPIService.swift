@@ -23,10 +23,16 @@ final class VKAPIService {
         }
     }
 
-    func sendNewsRequest(urlString: String, complition: @escaping (Result<NewsResponse, Error>) -> Void) {
+    func sendNewsRequest(
+        startTime: TimeInterval? = nil,
+        nextPage: String = Constants.Items.emptyString,
+        urlString: String,
+        complition: @escaping (Result<NewsResponse, Error>) -> Void
+    ) {
         AF.request(
             "\(Constants.URLComponents.baseURL)\(urlString)" +
-                "\(Constants.URLComponents.version)"
+                "\(Constants.URLComponents.version)\(Constants.URLComponents.startTime)" +
+                "\(startTime ?? 0)\(Constants.URLComponents.startTime)\(nextPage)"
         )
         .responseJSON { response in
             guard let response = response.data else { return }

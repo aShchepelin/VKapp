@@ -21,7 +21,6 @@ final class LoginViewController: UIViewController {
     @IBOutlet private var scrollView: UIScrollView!
     @IBOutlet private var loginTextField: UITextField!
     @IBOutlet private var passwordTextField: UITextField!
-
     @IBOutlet private var firstDotView: UIView!
     @IBOutlet private var secondDotView: UIView!
     @IBOutlet private var thirdDotView: UIView!

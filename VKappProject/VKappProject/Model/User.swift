@@ -3,5 +3,6 @@
 
 /// Пользователь
 struct User: Decodable {
+    /// Ответ
     let response: ResponseUser
 }

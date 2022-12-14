@@ -3,6 +3,7 @@
 
 /// Фотографии пользователей
 struct ResponsePhoto: Codable {
+    /// Фото
     let photos: [PhotoItem]
     enum CodingKeys: String, CodingKey {
         case photos = "items"
